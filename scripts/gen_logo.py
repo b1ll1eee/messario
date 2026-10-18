@@ -16,38 +16,37 @@ TEAL_DARK = "#2FB5A5"
 INK = "#16181D"
 WHITE = "#FFFFFF"
 
-# A speech bubble with an M cut out of it: concept C from the logo sheet.
-BUBBLE = "M14 14h36a6 6 0 0 1 6 6v22a6 6 0 0 1-6 6H26l-8 8v-8h-4a6 6 0 0 1-6-6V20a6 6 0 0 1 6-6z"
-LETTER_M = "M21 39V23l11 11 11-11v16"
+# Concept "Dialogue + M": two speech bubbles in conversation (the back one
+# translucent), the front one carrying the M of Messario as a cut-out.
+BACK = "M12 13h26a6 6 0 0 1 6 6v11a6 6 0 0 1-6 6H24l-7 6v-6h-5a6 6 0 0 1-6-6V19a6 6 0 0 1 6-6z"
+FRONT = "M26 28h26a6 6 0 0 1 6 6v11a6 6 0 0 1-6 6h-5v6l-7-6H26a6 6 0 0 1-6-6V34a6 6 0 0 1 6-6z"
+LETTER_M = "M33 44V34l6 6 6-6v10"
+BACK_OPACITY = "0.55"
 
 
-def mark(fg, bg, tile=True, size=64):
-    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 64 64" role="img" aria-label="Messario">']
-    if tile:
-        parts.append(f'<rect width="64" height="64" rx="18" fill="{bg}"/>')
-    parts.append(f'<path d="{BUBBLE}" fill="{fg}"/>')
-    # The letter is drawn in the tile colour so it reads as a cut-out.
-    parts.append(f'<path d="{LETTER_M}" fill="none" stroke="{bg if tile else WHITE}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>')
-    parts.append("</svg>")
-    return "".join(parts)
+def bubbles(fg, gap):
+    """The two bubbles plus the M. `gap` is the colour of the gap between
+    bubbles and of the letter (the tile colour, or white when there is no tile)."""
+    return (f'<path d="{BACK}" fill="{fg}" opacity="{BACK_OPACITY}"/>'
+            f'<path d="{FRONT}" fill="{fg}" stroke="{gap}" stroke-width="3" stroke-linejoin="round"/>'
+            f'<path d="{LETTER_M}" fill="none" stroke="{gap}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>')
+
+
+def mark(fg, bg, size=64):
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 64 64" role="img" aria-label="Messario">'
+            f'<rect width="64" height="64" rx="18" fill="{bg}"/>' + bubbles(fg, bg) + "</svg>")
 
 
 def mark_mono(color, size=64):
-    """Single-colour mark with no tile; the M is a true hole (even-odd)."""
+    """Single-colour mark with no tile, for print and coloured backgrounds."""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 64 64" role="img" aria-label="Messario">'
-            f'<path d="{BUBBLE}" fill="{color}"/>'
-            f'<path d="{LETTER_M}" fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>'
-            "</svg>")
+            + bubbles(color, WHITE) + "</svg>")
 
 
 def wordmark(fg, bg, width=360, height=96):
     """Mark + 'Messario' for README/site headers. Text uses the UI font stack."""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Messario">'
-            f'<g transform="translate(8 16) scale(1)">'
-            f'<rect width="64" height="64" rx="18" fill="{bg}"/>'
-            f'<path d="{BUBBLE}" fill="{WHITE if bg != "none" else fg}"/>'
-            f'<path d="{LETTER_M}" fill="none" stroke="{bg if bg != "none" else WHITE}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>'
-            f'</g>'
+            f'<g transform="translate(8 16)"><rect width="64" height="64" rx="18" fill="{bg}"/>' + bubbles(WHITE, bg) + '</g>'
             f'<text x="90" y="64" font-family="Instrument Sans, IBM Plex Sans Thai, system-ui, -apple-system, sans-serif" font-size="44" font-weight="700" letter-spacing="-1" fill="{fg}">Messario</text>'
             "</svg>")
 
