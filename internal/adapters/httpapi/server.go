@@ -34,13 +34,15 @@ type Server struct {
 	cfg     Config
 	log     *slog.Logger
 	ws      http.Handler
+	spa     http.Handler
 	limiter *botLimiter
 	origins map[string]bool
 }
 
-// New builds the server. ws is the WebSocket handler, mounted at /ws behind auth.
-func New(a *app.App, cfg Config, ws http.Handler, log *slog.Logger) *Server {
-	s := &Server{app: a, cfg: cfg, log: log, ws: ws, limiter: newBotLimiter(cfg.BotRatePerSec, cfg.BotBurst), origins: map[string]bool{}}
+// New builds the server. ws is the WebSocket handler, mounted at /ws behind
+// auth; spa serves the web client for every other path.
+func New(a *app.App, cfg Config, ws, spa http.Handler, log *slog.Logger) *Server {
+	s := &Server{app: a, cfg: cfg, log: log, ws: ws, spa: spa, limiter: newBotLimiter(cfg.BotRatePerSec, cfg.BotBurst), origins: map[string]bool{}}
 	for _, o := range cfg.AllowedOrigins {
 		if u, err := url.Parse(strings.TrimSpace(o)); err == nil && u.Host != "" {
 			s.origins[strings.ToLower(u.Scheme+"://"+u.Host)] = true
@@ -85,23 +87,13 @@ func (s *Server) Routes() http.Handler {
 
 	mux.HandleFunc("/bot/{token}/{method}", s.botAPI)
 
-	mux.HandleFunc("/", s.index)
+	mux.Handle("/", s.spa)
 
 	return s.withOriginCheck(s.withRecovery(mux))
 }
 
 func (s *Server) healthz(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
-}
-
-// index is a placeholder until the embedded Vue build lands.
-func (s *Server) index(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte(`<!doctype html><html lang="th"><meta charset="utf-8"><title>Nuntio</title><body style="font-family:system-ui;padding:40px"><h1>Nuntio</h1><p>API is running. Web client will be served here.</p></body></html>`))
 }
 
 // ---- middleware ----

@@ -121,20 +121,17 @@ func (a *App) AddMembers(ctx context.Context, viewer *domain.User, chatID int64,
 	}
 	now := a.Now()
 	var members []domain.Member
-	var names []string
 	for _, id := range ids {
-		u, err := a.sameOrgUser(ctx, viewer, id)
-		if err != nil {
+		if _, err := a.sameOrgUser(ctx, viewer, id); err != nil {
 			return err
 		}
 		members = append(members, domain.Member{UserID: id, Role: domain.MemberMember, JoinedAt: now})
-		names = append(names, u.DisplayName)
 	}
 	if err := a.Chats.AddMembers(ctx, chatID, members); err != nil {
 		return err
 	}
 	a.Hub.Publish(ids, Event{Type: "chat", Payload: c})
-	a.postSystem(ctx, c, viewer.ID, fmt.Sprintf("%s added %s", viewer.DisplayName, strings.Join(names, ", ")))
+	a.postSystem(ctx, c, SystemEvent{Type: "added", ActorID: viewer.ID, UserIDs: ids})
 	return nil
 }
 
@@ -163,13 +160,10 @@ func (a *App) RemoveMember(ctx context.Context, viewer *domain.User, chatID, use
 		return err
 	}
 	a.Hub.Publish([]int64{userID}, Event{Type: "left", Payload: map[string]any{"chat_id": chatID}})
-	u, err := a.Users.ByID(ctx, userID)
-	if err == nil {
-		if self {
-			a.postSystem(ctx, c, viewer.ID, fmt.Sprintf("%s left", u.DisplayName))
-		} else {
-			a.postSystem(ctx, c, viewer.ID, fmt.Sprintf("%s removed %s", viewer.DisplayName, u.DisplayName))
-		}
+	if self {
+		a.postSystem(ctx, c, SystemEvent{Type: "left", ActorID: viewer.ID})
+	} else {
+		a.postSystem(ctx, c, SystemEvent{Type: "removed", ActorID: viewer.ID, UserIDs: []int64{userID}})
 	}
 	return nil
 }
@@ -201,6 +195,7 @@ func (a *App) RenameChat(ctx context.Context, viewer *domain.User, chatID int64,
 	c.Title = title
 	ids, _ := a.Chats.MemberIDs(ctx, chatID)
 	a.Hub.Publish(ids, Event{Type: "chat", Payload: c})
+	a.postSystem(ctx, c, SystemEvent{Type: "renamed", ActorID: viewer.ID, Title: title})
 	return nil
 }
 

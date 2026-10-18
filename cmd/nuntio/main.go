@@ -22,11 +22,16 @@ import (
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/hash"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/httpapi"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/memhub"
+	"github.com/b1ll1eee/nuntio-message/internal/adapters/obs"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/postgres"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/ws"
 	"github.com/b1ll1eee/nuntio-message/internal/app"
 	"github.com/b1ll1eee/nuntio-message/internal/config"
+	"github.com/b1ll1eee/nuntio-message/internal/web"
 )
+
+// version is stamped at build time: -ldflags "-X main.version=1.2.3".
+var version = "dev"
 
 func main() {
 	if err := run(os.Args[1:]); err != nil {
@@ -44,9 +49,26 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
-	log := newLogger(cfg.LogLevel)
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
+
+	cfg.Obs.Version = version
+	tel, err := obs.Start(ctx, obs.Config{
+		Endpoint: cfg.Obs.VindiceEndpoint, APIKey: cfg.Obs.VindiceAPIKey, ServiceName: cfg.Obs.ServiceName,
+		Version: version, Environment: cfg.Obs.Environment,
+	}, newLogger(cfg.LogLevel))
+	if err != nil {
+		return fmt.Errorf("observability: %w", err)
+	}
+	defer func() {
+		flushCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_ = tel.Shutdown(flushCtx)
+	}()
+	log := tel.Logger
+	if cfg.Obs.VindiceEndpoint != "" {
+		log.Info("vindice telemetry on", "endpoint", cfg.Obs.VindiceEndpoint, "service", cfg.Obs.ServiceName, "env", cfg.Obs.Environment)
+	}
 
 	db, err := postgres.Open(ctx, cfg.DatabaseURL)
 	if err != nil {
@@ -82,7 +104,7 @@ func run(args []string) error {
 	case "init":
 		return runInit(ctx, a, args)
 	case "serve":
-		return serve(ctx, cfg, a, hub, log)
+		return serve(ctx, cfg, a, hub, tel, log)
 	default:
 		return fmt.Errorf("unknown command %q (serve|migrate|init)", cmd)
 	}
@@ -108,7 +130,7 @@ func runInit(ctx context.Context, a *app.App, args []string) error {
 	return nil
 }
 
-func serve(ctx context.Context, cfg config.Config, a *app.App, hub *memhub.Hub, log *slog.Logger) error {
+func serve(ctx context.Context, cfg config.Config, a *app.App, hub *memhub.Hub, tel *obs.Telemetry, log *slog.Logger) error {
 	origins := append([]string{cfg.PublicURL}, splitList(os.Getenv("NUNTIO_ALLOWED_ORIGINS"))...)
 	wsHandler := ws.New(a, hub, ws.Config{
 		WriteTimeout: cfg.WS.WriteTimeout, PingInterval: cfg.WS.PingInterval, PongTimeout: cfg.WS.PongTimeout,
@@ -117,17 +139,17 @@ func serve(ctx context.Context, cfg config.Config, a *app.App, hub *memhub.Hub, 
 	api := httpapi.New(a, httpapi.Config{
 		CookieName: cfg.CookieName, CookieSecure: cfg.CookieSecure, SessionTTL: cfg.SessionTTL, AllowedOrigins: origins,
 		BotRatePerSec: cfg.Bot.RatePerSecond, BotBurst: cfg.Bot.Burst, BotLongPoll: cfg.Bot.LongPollTimeout, BotUpdatesMax: cfg.Bot.UpdatesPageMax,
-	}, wsHandler, log)
+	}, wsHandler, web.Handler(), log)
 
 	srv := &http.Server{
 		Addr:              cfg.Addr,
-		Handler:           api.Routes(),
+		Handler:           tel.Wrap(api.Routes()),
 		ReadHeaderTimeout: 10 * time.Second,
 		IdleTimeout:       120 * time.Second,
 	}
 	errc := make(chan error, 1)
 	go func() {
-		log.Info("nuntio listening", "addr", cfg.Addr, "public_url", cfg.PublicURL)
+		log.Info("nuntio listening", "addr", cfg.Addr, "public_url", cfg.PublicURL, "version", version)
 		errc <- srv.ListenAndServe()
 	}()
 	select {

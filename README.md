@@ -5,17 +5,24 @@ Telegram-style bot API. Your data stays on your server.
 
 ## Status
 
-Phase 1: backend core (auth, direct/group/channel chats, messages with
-gap-free sequences, read receipts, admin, audit log, bot API, WebSocket).
-The web client is next.
+- Phase 1: backend core (auth, direct/group/channel chats, messages with
+  gap-free sequences, read receipts, admin, audit log, bot API, WebSocket).
+- Phase 2: Vue 3 + Pinia web client embedded in the binary (chat list,
+  conversation, channels, read receipts, outbox with retry, reconnect + resync,
+  admin page for users/bots/audit, light + dark, phone layout). Optional
+  Vindice observability (traces, metrics, logs) via `NUNTIO_VINDICE_ENDPOINT`.
 
 ## Run locally
 
 ```sh
 make db-up                                   # PostgreSQL 17 in Docker
 make init ORG="My Company" ADMIN=admin PASSWORD=changeme-now
-make run                                     # http://localhost:8080
+make web                                     # build the Vue client into internal/web/dist
+make run                                     # http://localhost:8080 (API + embedded client)
 ```
+
+For UI work run `make web-dev` in a second terminal and open
+http://localhost:5173; Vite proxies `/api`, `/ws` and `/bot` to :8080.
 
 Every setting is an environment variable with a default; see `.env.example`
 and `internal/config/config.go`.
@@ -32,6 +39,9 @@ internal/adapters/
   ws                  WebSocket adapter
   memhub              in-memory fan-out (swap for NATS when multi-instance)
   hash                bcrypt
+  obs                 Vindice / OpenTelemetry (optional)
+internal/web          embedded Vite build + SPA handler
+web/                  Vue 3 + Pinia + TypeScript source
 ```
 
 ## API sketch

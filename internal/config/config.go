@@ -22,6 +22,16 @@ type Config struct {
 	Limits Limits
 	WS     WS
 	Bot    Bot
+	Obs    Obs
+}
+
+// Obs points at Vindice, the team's observability platform. Empty endpoint = off.
+type Obs struct {
+	VindiceEndpoint string // e.g. http://vindice-host:4318 (also honours VINDICE_ENDPOINT)
+	VindiceAPIKey   string // ingest key (also honours VINDICE_API_KEY)
+	Environment     string // production|staging|dev, tagged on every signal
+	ServiceName     string
+	Version         string // set at build time via -ldflags "-X main.version=..."
 }
 
 // Limits are product rules that an operator may tune per install.
@@ -79,6 +89,12 @@ func Load() (Config, error) {
 			Burst:           envInt("NUNTIO_BOT_BURST", 30),
 			LongPollTimeout: envDuration("NUNTIO_BOT_LONGPOLL_TIMEOUT", 25*time.Second),
 			UpdatesPageMax:  envInt("NUNTIO_BOT_UPDATES_PAGE_MAX", 100),
+		},
+		Obs: Obs{
+			VindiceEndpoint: env("NUNTIO_VINDICE_ENDPOINT", env("VINDICE_ENDPOINT", "")),
+			VindiceAPIKey:   env("NUNTIO_VINDICE_API_KEY", env("VINDICE_API_KEY", "")),
+			Environment:     env("NUNTIO_ENVIRONMENT", "production"),
+			ServiceName:     env("NUNTIO_SERVICE_NAME", "nuntio"),
 		},
 	}
 	if c.DatabaseURL == "" {

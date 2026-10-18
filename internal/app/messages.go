@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"github.com/b1ll1eee/nuntio-message/internal/domain"
@@ -38,6 +39,8 @@ func (a *App) Send(ctx context.Context, sender *domain.User, chatID int64, clien
 		return nil, false, err
 	}
 	if created {
+		// The sender has obviously read their own message.
+		_ = a.Chats.SetReadSeq(ctx, chatID, sender.ID, m.Seq)
 		a.fanOut(ctx, chatID, m)
 	}
 	return m, created, nil
@@ -122,10 +125,25 @@ func (a *App) ReadInfo(ctx context.Context, viewer *domain.User, chatID, seq int
 	return &ReadInfo{Count: count, Total: total, Readers: readers}, nil
 }
 
+// SystemEvent is the structured body of a system message. Clients render it
+// in the viewer's language using the ids, so the server stores no copy.
+type SystemEvent struct {
+	Type    string  `json:"type"` // added | removed | left | renamed
+	ActorID int64   `json:"actor_id"`
+	UserIDs []int64 `json:"user_ids,omitempty"`
+	Title   string  `json:"title,omitempty"`
+}
+
 // postSystem appends a system message (member joined, renamed, ...).
-func (a *App) postSystem(ctx context.Context, c *domain.Chat, actorID int64, body string) {
-	m := &domain.Message{ChatID: c.ID, SenderID: actorID, Kind: domain.KindSystem, Body: body, CreatedAt: a.Now()}
+func (a *App) postSystem(ctx context.Context, c *domain.Chat, ev SystemEvent) {
+	body, err := json.Marshal(ev)
+	if err != nil {
+		return
+	}
+	m := &domain.Message{ChatID: c.ID, SenderID: ev.ActorID, Kind: domain.KindSystem, Body: string(body), CreatedAt: a.Now()}
 	if created, err := a.Messages.Append(ctx, m); err == nil && created {
+		// The actor caused this event; don't count it as unread for them.
+		_ = a.Chats.SetReadSeq(ctx, c.ID, ev.ActorID, m.Seq)
 		a.fanOut(ctx, c.ID, m)
 	}
 }
