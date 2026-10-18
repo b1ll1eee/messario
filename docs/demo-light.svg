@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="An animated Messario conversation: two teammates and a deploy bot in a group chat.">
+<rect x="0.5" y="0.5" width="1199" height="419" rx="16" fill="#FFFFFF" stroke="#E3E6EB"/>
+<rect x="1" y="1" width="1198" height="56" rx="16" fill="#F7F8FA"/>
+<rect x="1" y="40" width="1198" height="17" fill="#F7F8FA"/>
+<line x1="1" y1="57" x2="1199" y2="57" stroke="#E3E6EB"/>
+<rect x="24" y="12" width="34" height="34" rx="10" fill="#dce6f2"/>
+<text x="41" y="34" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#26405e" text-anchor="middle" letter-spacing="0">ที</text>
+<text x="70" y="29" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#16181D" text-anchor="start" letter-spacing="0">ทีมพัฒนา</text>
+<text x="70" y="46" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">4 คน · 1 บอท</text>
+<g opacity="0">
+<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.055;0.091;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="0;0.055;0.091;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<rect x="24" y="72" width="30" height="30" rx="9" fill="#dce6f2"/>
+<text x="39" y="92" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#26405e" text-anchor="middle" letter-spacing="0">ณศ</text>
+<text x="68" y="90" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#16181D" text-anchor="start" letter-spacing="0">ณัฐพล ศรีสุข</text>
+<text x="169.2" y="90" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">09:31</text>
+<text x="68" y="114" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#16181D" text-anchor="start" letter-spacing="0">เมื่อคืน merge PR ระบบ invoice เข้า main แล้วครับ บ่ายนี้จะ deploy production</text>
+</g>
+<g opacity="0">
+<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.200;0.236;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="0;0.200;0.236;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<rect x="24" y="128" width="30" height="30" rx="9" fill="#e9e2f5"/>
+<text x="39" y="148" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#43306b" text-anchor="middle" letter-spacing="0">วท</text>
+<text x="68" y="146" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#16181D" text-anchor="start" letter-spacing="0">วริศรา ทองดี</text>
+<text x="169.2" y="146" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">09:34</text>
+<text x="68" y="170" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#16181D" text-anchor="start" letter-spacing="0">ไม่มีค่ะ ของฝั่งหน้าบ้านเรียบร้อยหมดแล้ว</text>
+</g>
+<g opacity="0">
+<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.345;0.382;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="0;0.345;0.382;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<rect x="24" y="184" width="30" height="30" rx="9" fill="#DDF3EC"/>
+<g transform="translate(31 191) scale(0.25)" fill="none" stroke="#0B5C4D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="56" height="44" rx="12"/><path d="M32 -4v12"/><circle cx="22" cy="30" r="3"/><circle cx="42" cy="30" r="3"/></g>
+<text x="68" y="202" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#16181D" text-anchor="start" letter-spacing="0">Deploy Bot</text>
+<rect x="154.0" y="190" width="32" height="16" rx="4" fill="#DDF3EC"/>
+<text x="170.0" y="202" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#0B5C4D" text-anchor="middle" letter-spacing="0.8">BOT</text>
+<text x="196.0" y="202" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">13:02</text>
+<rect x="68" y="212" width="700" height="40" rx="10" fill="#F7F8FA" stroke="#E3E6EB"/>
+<rect x="68" y="212" width="3" height="40" rx="1.5" fill="#0F766E"/>
+<circle cx="88" cy="232" r="4" fill="#2E7D4F"/>
+<text x="100" y="237" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="500" fill="#16181D" text-anchor="start" letter-spacing="0">production v1.4.2 สำเร็จ · 1 นาที 48 วิ · a81f2c9 invoice: fix VAT rounding</text>
+</g>
+<g opacity="0">
+<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.491;0.527;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="0;0.491;0.527;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<rect x="24" y="254" width="30" height="30" rx="9" fill="#dce6f2"/>
+<text x="39" y="274" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#26405e" text-anchor="middle" letter-spacing="0">ณศ</text>
+<text x="68" y="272" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#16181D" text-anchor="start" letter-spacing="0">ณัฐพล ศรีสุข</text>
+<text x="169.2" y="272" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">13:05</text>
+<text x="68" y="296" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#16181D" text-anchor="start" letter-spacing="0">ขึ้นแล้วครับ ฝากทีมขายช่วยเช็กหน้า invoice ด้วย</text>
+</g>
+<g opacity="0">
+<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.636;0.673;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="0;0.636;0.673;0.93;1" dur="11.0s" repeatCount="indefinite"/>
+<rect x="24" y="310" width="30" height="30" rx="9" fill="#e9e2f5"/>
+<text x="39" y="330" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#43306b" text-anchor="middle" letter-spacing="0">วท</text>
+<text x="68" y="328" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#16181D" text-anchor="start" letter-spacing="0">วริศรา ทองดี</text>
+<text x="169.2" y="328" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">13:07</text>
+<text x="68" y="352" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#16181D" text-anchor="start" letter-spacing="0">เช็กแล้ว ผ่านค่ะ ✓</text>
+</g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.80;0.84;0.93;1" dur="11.0s" repeatCount="indefinite"/><path d="M70 384 l4 4 8-8" fill="none" stroke="#8A919E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="88" y="388" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">อ่านแล้ว 3 จาก 3</text></g>
+<rect x="24" y="356" width="1152" height="44" rx="12" fill="#FFFFFF" stroke="#E3E6EB"/>
+<text x="42" y="383" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#8A919E" text-anchor="start" letter-spacing="0">ส่งข้อความถึง ทีมพัฒนา</text>
+<rect x="1136" y="360" width="36" height="36" rx="9" fill="#0F766E"/>
+<path d="M1147 378 h14 m-5 -5 l5 5 -5 5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

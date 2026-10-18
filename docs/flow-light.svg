@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="230" viewBox="0 0 1200 230" role="img" aria-label="How a message travels: client sends over WebSocket, the core assigns the next sequence number in PostgreSQL, then fans out to members, bot webhooks and connected devices.">
+<rect x="0.5" y="0.5" width="1199" height="229" rx="16" fill="#FFFFFF" stroke="#E3E6EB"/>
+<path d="M 190 96 L 1010 96" stroke="#E3E6EB" stroke-width="1.5"/>
+<rect x="50" y="66" width="140" height="60" rx="12" fill="#F7F8FA" stroke="#E3E6EB" stroke-width="1.5"/>
+<text x="120" y="92" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#16181D" text-anchor="middle" letter-spacing="0">Client</text>
+<text x="120" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#8A919E" text-anchor="middle" letter-spacing="0">Vue · outbox</text>
+<text x="120" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" fill="#5F6675" text-anchor="middle" letter-spacing="0">client_msg_id</text>
+<rect x="290" y="66" width="140" height="60" rx="12" fill="#F7F8FA" stroke="#E3E6EB" stroke-width="1.5"/>
+<text x="360" y="92" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#16181D" text-anchor="middle" letter-spacing="0">WebSocket / REST</text>
+<text x="360" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#8A919E" text-anchor="middle" letter-spacing="0">auth · origin check</text>
+<text x="360" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" fill="#5F6675" text-anchor="middle" letter-spacing="0">send</text>
+<rect x="530" y="66" width="140" height="60" rx="12" fill="#DDF3EC" stroke="#0F766E" stroke-width="1.5"/>
+<text x="600" y="92" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#0B5C4D" text-anchor="middle" letter-spacing="0">Core</text>
+<text x="600" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#0B5C4D" text-anchor="middle" letter-spacing="0">use cases · ports</text>
+<text x="600" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" fill="#5F6675" text-anchor="middle" letter-spacing="0">seq = last_seq + 1</text>
+<rect x="770" y="66" width="140" height="60" rx="12" fill="#F7F8FA" stroke="#E3E6EB" stroke-width="1.5"/>
+<text x="840" y="92" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#16181D" text-anchor="middle" letter-spacing="0">PostgreSQL</text>
+<text x="840" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#8A919E" text-anchor="middle" letter-spacing="0">messages · read_seq</text>
+<text x="840" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" fill="#5F6675" text-anchor="middle" letter-spacing="0">gap-free</text>
+<rect x="1010" y="66" width="140" height="60" rx="12" fill="#F7F8FA" stroke="#E3E6EB" stroke-width="1.5"/>
+<text x="1080" y="92" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#16181D" text-anchor="middle" letter-spacing="0">Fan-out</text>
+<text x="1080" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="400" fill="#8A919E" text-anchor="middle" letter-spacing="0">devices · bot webhooks</text>
+<text x="1080" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" fill="#5F6675" text-anchor="middle" letter-spacing="0">msg · read</text>
+<circle r="4" fill="#0F766E"><animateMotion dur="3.2s" repeatCount="indefinite" path="M 190 96 L 1010 96"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.2s" repeatCount="indefinite"/></circle>
+<text x="48" y="194" font-family="'Instrument Sans', 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#5F6675" text-anchor="start" letter-spacing="0">Retries are idempotent (same client_msg_id → same message). After a reconnect a client asks for everything after the last seq it holds.</text>
+</svg>
