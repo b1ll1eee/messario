@@ -1,0 +1,131 @@
+// Package config reads runtime settings from the environment. Every setting
+// has a default so a bare binary starts; nothing is hard-coded elsewhere.
+package config
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"time"
+)
+
+// Config is the full runtime configuration.
+type Config struct {
+	Addr         string        // HTTP listen address
+	DatabaseURL  string        // PostgreSQL connection string
+	PublicURL    string        // external URL, used for cookies/CSRF origin checks
+	CookieName   string        // session cookie name
+	CookieSecure bool          // Secure flag on cookies (false only for local dev)
+	SessionTTL   time.Duration // how long a login lasts
+	LogLevel     string        // debug|info|warn|error
+
+	Limits Limits
+	WS     WS
+	Bot    Bot
+}
+
+// Limits are product rules that an operator may tune per install.
+type Limits struct {
+	MaxGroupMembers   int // cap for group chats
+	MaxChannelMembers int // cap for broadcast channels
+	MaxBodyBytes      int // longest message body
+	HistoryPageSize   int // default page size for history
+	HistoryPageMax    int // hard cap a client may request
+	DirectoryPageMax  int // hard cap for user directory listing
+}
+
+// WS tunes the WebSocket adapter.
+type WS struct {
+	WriteTimeout time.Duration
+	PingInterval time.Duration // server sends pings; client must answer within PongTimeout
+	PongTimeout  time.Duration
+	SendBuffer   int // queued events per connection before it is dropped as slow
+}
+
+// Bot tunes the bot API.
+type Bot struct {
+	RatePerSecond   float64       // sendMessage calls per second per bot
+	Burst           int           // burst allowance per bot
+	LongPollTimeout time.Duration // max wait in getUpdates
+	UpdatesPageMax  int
+}
+
+// Load reads NUNTIO_* variables with defaults.
+func Load() (Config, error) {
+	c := Config{
+		Addr:         env("NUNTIO_ADDR", ":8080"),
+		DatabaseURL:  env("NUNTIO_DATABASE_URL", "postgres://nuntio:nuntio@localhost:5432/nuntio?sslmode=disable"),
+		PublicURL:    env("NUNTIO_PUBLIC_URL", "http://localhost:8080"),
+		CookieName:   env("NUNTIO_COOKIE_NAME", "nuntio_session"),
+		CookieSecure: envBool("NUNTIO_COOKIE_SECURE", true),
+		SessionTTL:   envDuration("NUNTIO_SESSION_TTL", 30*24*time.Hour),
+		LogLevel:     env("NUNTIO_LOG_LEVEL", "info"),
+		Limits: Limits{
+			MaxGroupMembers:   envInt("NUNTIO_MAX_GROUP_MEMBERS", 200),
+			MaxChannelMembers: envInt("NUNTIO_MAX_CHANNEL_MEMBERS", 5000),
+			MaxBodyBytes:      envInt("NUNTIO_MAX_BODY_BYTES", 8000),
+			HistoryPageSize:   envInt("NUNTIO_HISTORY_PAGE_SIZE", 50),
+			HistoryPageMax:    envInt("NUNTIO_HISTORY_PAGE_MAX", 200),
+			DirectoryPageMax:  envInt("NUNTIO_DIRECTORY_PAGE_MAX", 500),
+		},
+		WS: WS{
+			WriteTimeout: envDuration("NUNTIO_WS_WRITE_TIMEOUT", 10*time.Second),
+			PingInterval: envDuration("NUNTIO_WS_PING_INTERVAL", 25*time.Second),
+			PongTimeout:  envDuration("NUNTIO_WS_PONG_TIMEOUT", 10*time.Second),
+			SendBuffer:   envInt("NUNTIO_WS_SEND_BUFFER", 64),
+		},
+		Bot: Bot{
+			RatePerSecond:   envFloat("NUNTIO_BOT_RATE_PER_SECOND", 30),
+			Burst:           envInt("NUNTIO_BOT_BURST", 30),
+			LongPollTimeout: envDuration("NUNTIO_BOT_LONGPOLL_TIMEOUT", 25*time.Second),
+			UpdatesPageMax:  envInt("NUNTIO_BOT_UPDATES_PAGE_MAX", 100),
+		},
+	}
+	if c.DatabaseURL == "" {
+		return c, fmt.Errorf("NUNTIO_DATABASE_URL is required")
+	}
+	return c, nil
+}
+
+func env(key, def string) string {
+	if v, ok := os.LookupEnv(key); ok && v != "" {
+		return v
+	}
+	return def
+}
+
+func envInt(key string, def int) int {
+	if v, ok := os.LookupEnv(key); ok && v != "" {
+		if n, err := strconv.Atoi(v); err == nil {
+			return n
+		}
+	}
+	return def
+}
+
+func envFloat(key string, def float64) float64 {
+	if v, ok := os.LookupEnv(key); ok && v != "" {
+		if n, err := strconv.ParseFloat(v, 64); err == nil {
+			return n
+		}
+	}
+	return def
+}
+
+func envBool(key string, def bool) bool {
+	if v, ok := os.LookupEnv(key); ok && v != "" {
+		if b, err := strconv.ParseBool(v); err == nil {
+			return b
+		}
+	}
+	return def
+}
+
+func envDuration(key string, def time.Duration) time.Duration {
+	if v, ok := os.LookupEnv(key); ok && v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			return d
+		}
+	}
+	return def
+}
