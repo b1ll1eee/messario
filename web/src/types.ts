@@ -38,6 +38,13 @@ export interface ChatSummary extends Chat {
   member_count: number
 }
 
+export interface Attachment {
+  file_id: number
+  name: string
+  size: number
+  mime: string
+}
+
 export interface Message {
   id: number
   chat_id: number
@@ -46,6 +53,7 @@ export interface Message {
   client_msg_id?: string
   kind: MessageKind
   body: string
+  attachment?: Attachment
   created_at: string
   /** client-only: queued in the outbox, not yet acknowledged */
   pending?: boolean
@@ -69,4 +77,10 @@ export interface ReadInfo {
 
 export interface ApiErrorBody {
   error: { code: string; message: string }
+}
+
+export interface LicenseStatus {
+  seats: number
+  used_seats: number
+  status: string
 }

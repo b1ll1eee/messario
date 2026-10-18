@@ -19,14 +19,17 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/b1ll1eee/nuntio-message/internal/adapters/filestore"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/hash"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/httpapi"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/memhub"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/obs"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/postgres"
+	"github.com/b1ll1eee/nuntio-message/internal/adapters/webhook"
 	"github.com/b1ll1eee/nuntio-message/internal/adapters/ws"
 	"github.com/b1ll1eee/nuntio-message/internal/app"
 	"github.com/b1ll1eee/nuntio-message/internal/config"
+	"github.com/b1ll1eee/nuntio-message/internal/license"
 	"github.com/b1ll1eee/nuntio-message/internal/web"
 )
 
@@ -84,16 +87,34 @@ func run(args []string) error {
 		log.Info("migrations applied", "versions", applied)
 	}
 
+	store, err := openFileStore(ctx, cfg.Files, log)
+	if err != nil {
+		return err
+	}
+	lic, err := openLicense(cfg.License)
+	if err != nil {
+		return err
+	}
+	if _, status := lic.Seats(); cmd == "serve" {
+		log.Info("license", "status", status)
+	}
+
 	hub := memhub.New(log)
 	a := app.New(app.Deps{
 		Orgs: postgres.NewOrgRepo(db), Users: postgres.NewUserRepo(db), Sessions: postgres.NewSessionRepo(db),
 		Chats: postgres.NewChatRepo(db), Messages: postgres.NewMessageRepo(db), Audit: postgres.NewAuditRepo(db),
-		Hub: hub, Hasher: hash.Bcrypt{},
+		Files: postgres.NewFileRepo(db), Store: store,
+		Webhooks: postgres.NewWebhookRepo(db),
+		Dispatch: webhook.New(webhook.Config{
+			Timeout: cfg.Webhook.Timeout, Attempts: cfg.Webhook.Attempts, Backoff: cfg.Webhook.Backoff, Concurrency: cfg.Webhook.Concurrency,
+		}, log),
+		License: lic,
+		Hub:     hub, Hasher: hash.Bcrypt{},
 		Limits: app.Limits{
 			MaxGroupMembers: cfg.Limits.MaxGroupMembers, MaxChannelMembers: cfg.Limits.MaxChannelMembers,
 			MaxBodyBytes: cfg.Limits.MaxBodyBytes, HistoryPageSize: cfg.Limits.HistoryPageSize,
 			HistoryPageMax: cfg.Limits.HistoryPageMax, DirectoryPageMax: cfg.Limits.DirectoryPageMax,
-			SessionTTL: cfg.SessionTTL,
+			SessionTTL: cfg.SessionTTL, MaxFileBytes: cfg.Files.MaxBytes,
 		},
 	})
 
@@ -139,6 +160,7 @@ func serve(ctx context.Context, cfg config.Config, a *app.App, hub *memhub.Hub, 
 	api := httpapi.New(a, httpapi.Config{
 		CookieName: cfg.CookieName, CookieSecure: cfg.CookieSecure, SessionTTL: cfg.SessionTTL, AllowedOrigins: origins,
 		BotRatePerSec: cfg.Bot.RatePerSecond, BotBurst: cfg.Bot.Burst, BotLongPoll: cfg.Bot.LongPollTimeout, BotUpdatesMax: cfg.Bot.UpdatesPageMax,
+		MaxFileBytes: cfg.Files.MaxBytes,
 	}, wsHandler, web.Handler(), log)
 
 	srv := &http.Server{
@@ -182,4 +204,34 @@ func splitList(s string) []string {
 		}
 	}
 	return out
+}
+
+// openFileStore picks S3 when an endpoint is configured, else the local directory.
+func openFileStore(ctx context.Context, cfg config.Files, log *slog.Logger) (app.FileStore, error) {
+	if cfg.S3Endpoint != "" {
+		log.Info("files: s3", "endpoint", cfg.S3Endpoint, "bucket", cfg.S3Bucket)
+		return filestore.NewS3(ctx, filestore.S3Config{
+			Endpoint: cfg.S3Endpoint, AccessKey: cfg.S3AccessKey, SecretKey: cfg.S3SecretKey,
+			Bucket: cfg.S3Bucket, Region: cfg.S3Region, UseSSL: cfg.S3UseSSL,
+		})
+	}
+	log.Info("files: local", "dir", cfg.Dir)
+	return filestore.NewLocal(cfg.Dir)
+}
+
+// openLicense verifies the configured key; a bad key is a startup error so
+// an operator notices, an absent key means the community tier.
+func openLicense(cfg config.License) (*license.License, error) {
+	var pub []byte
+	if cfg.PublicKey != "" {
+		k, err := license.DecodePublicKey(cfg.PublicKey)
+		if err != nil {
+			return nil, err
+		}
+		pub = k
+	}
+	if cfg.Key != "" && pub == nil {
+		return nil, fmt.Errorf("NUNTIO_LICENSE is set but no license public key is configured")
+	}
+	return license.Parse(cfg.Key, pub, cfg.FreeSeats)
 }

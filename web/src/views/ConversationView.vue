@@ -98,6 +98,17 @@ function send(body: string) {
   chats.send(props.id, body)
   stickToBottom.value = true
 }
+
+const uploadError = ref('')
+async function attach(file: File) {
+  uploadError.value = ''
+  stickToBottom.value = true
+  try {
+    await chats.sendFile(props.id, file)
+  } catch (e) {
+    uploadError.value = `${t.chat.uploadFailed}: ${(e as Error).message}`
+  }
+}
 </script>
 
 <template>
@@ -130,7 +141,8 @@ function send(body: string) {
       <RightPanel v-if="showPanel" @close="showPanel = false" />
     </div>
 
-    <Composer :placeholder="chat.type === 'channel' ? `${t.chat.channelPlaceholder} ${memberCount} ${t.chat.members}` : `${t.chat.placeholder} ${chat.title}`" :disabled="!canPost" :channel="chat.type === 'channel'" @send="send" />
+    <p v-if="uploadError" class="error upload-error" role="alert">{{ uploadError }}</p>
+    <Composer :placeholder="chat.type === 'channel' ? `${t.chat.channelPlaceholder} ${memberCount} ${t.chat.members}` : `${t.chat.placeholder} ${chat.title}`" :disabled="!canPost" :channel="chat.type === 'channel'" @send="send" @attach="attach" />
   </section>
 </template>
 
@@ -152,6 +164,7 @@ h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; white-space: no
 .day { display: flex; align-items: center; gap: 12px; color: var(--faint); font-size: 12px; margin: 8px 0; }
 .day::before, .day::after { content: ''; flex-grow: 1; height: 1px; background: var(--border); }
 .center { text-align: center; }
+.upload-error { padding: 0 20px; }
 @media (max-width: 767px) {
   .head { padding: 10px 12px; }
   .back { display: inline-flex; }

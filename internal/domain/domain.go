@@ -190,6 +190,27 @@ type ChatSummary struct {
 	MemberCount int       `json:"member_count"`
 }
 
+// File is an uploaded attachment. StorageKey locates the bytes in the FileStore.
+type File struct {
+	ID         int64     `json:"id"`
+	OrgID      int64     `json:"-"`
+	ChatID     int64     `json:"chat_id"`
+	UploaderID int64     `json:"uploader_id"`
+	Name       string    `json:"name"`
+	Size       int64     `json:"size"`
+	Mime       string    `json:"mime"`
+	StorageKey string    `json:"-"`
+	CreatedAt  time.Time `json:"created_at"`
+}
+
+// Webhook is where a bot wants incoming messages pushed.
+type Webhook struct {
+	BotID     int64     `json:"bot_id"`
+	URL       string    `json:"url"`
+	Secret    string    `json:"-"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 // AuditEntry records an administrative or security-relevant action.
 type AuditEntry struct {
 	ID        int64          `json:"id"`

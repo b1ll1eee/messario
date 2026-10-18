@@ -25,6 +25,7 @@ const others = computed(() => filtered.value.filter((c) => c.type !== 'channel')
 
 function preview(c: (typeof chats.list)[number]) {
   if (!c.last_body) return ''
+  if (c.last_kind === 'file') return `📎 ${c.last_body}`
   if (c.last_kind === 'system') {
     try {
       const ev = JSON.parse(c.last_body) as { type: string; actor_id: number }

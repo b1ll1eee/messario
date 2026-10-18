@@ -11,6 +11,11 @@ Telegram-style bot API. Your data stays on your server.
   conversation, channels, read receipts, outbox with retry, reconnect + resync,
   admin page for users/bots/audit, light + dark, phone layout). Optional
   Vindice observability (traces, metrics, logs) via `NUNTIO_VINDICE_ENDPOINT`.
+- Phase 3: file and image attachments (local disk by default, any
+  S3-compatible store via `NUNTIO_S3_*`), bot webhooks (`setWebhook`,
+  `sendDocument`), offline ed25519 license keys with seat limits, and a
+  customer deployment: `Dockerfile` + `deploy/docker-compose.yml` with
+  PostgreSQL and Caddy (automatic HTTPS).
 
 ## Run locally
 
@@ -69,14 +74,54 @@ client sends `send`, `read`, `ping`; server sends `hello`, `ack`, `msg`,
 `read`, `chat`, `left`, `err`, `pong`. Clients resync after reconnect with
 `after_seq`; `client_msg_id` makes retries idempotent.
 
-Bot API, Telegram-shaped:
+Files: `POST /api/chats/{id}/files` (multipart `file`) posts a file message;
+`GET /api/files/{id}` streams it to chat members only.
+
+## Deploy for a customer (self-hosted)
+
+```sh
+cd deploy
+cp .env.example .env                 # NUNTIO_DOMAIN, POSTGRES_PASSWORD, NUNTIO_LICENSE
+docker compose up -d
+docker compose exec nuntio /app/nuntio init --org "My Company" --admin admin --password 'change-me'
+```
+
+Caddy obtains the TLS certificate for `NUNTIO_DOMAIN` automatically; ports
+80/443 must reach the host. Files live in the `nuntio-data` volume (or set
+`NUNTIO_S3_*` to use S3/MinIO/R2). Updating is `docker compose pull && docker
+compose up -d`; migrations run on start. Back up the `postgres-data` and
+`nuntio-data` volumes.
+
+## Licensing
+
+Without a key the server runs as the community edition with
+`NUNTIO_FREE_SEATS` (default 10) active human users; bots are never counted.
+Keys are verified offline with an ed25519 public key compiled into the
+binary (`config.DefaultLicensePublicKey`, override with
+`NUNTIO_LICENSE_PUBLIC_KEY`). Vendor side:
+
+```sh
+go run ./cmd/licensegen keygen                                  # once; keep the private key safe
+go run ./cmd/licensegen issue -key <private> -org "ACME" -seats 100 -days 365
+```
+
+An expired key falls back to community limits instead of locking users out.
+
+## Bot API
 
 ```
-POST /bot/<token>/sendMessage   {"chat_id": 2, "text": "deploy done"}
+POST /bot/<token>/sendMessage     {"chat_id": 2, "text": "deploy done"}
+POST /bot/<token>/sendDocument    multipart: chat_id, document
 GET  /bot/<token>/getMe
-GET  /bot/<token>/getUpdates?offset=<last id + 1>&timeout=25
 GET  /bot/<token>/getChats
+GET  /bot/<token>/getUpdates?offset=<last id + 1>&timeout=25     (long-poll)
+POST /bot/<token>/setWebhook      {"url": "https://...", "secret": "..."}
+POST /bot/<token>/deleteWebhook
+GET  /bot/<token>/getWebhookInfo
 ```
+
+Webhooks receive `{"message": {...}}` as JSON with the secret in the
+`X-Nuntio-Secret` header; non-2xx responses are retried with backoff.
 
 ## Development
 

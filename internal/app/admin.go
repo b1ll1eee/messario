@@ -81,6 +81,9 @@ func (a *App) CreateUser(ctx context.Context, admin *domain.User, in NewUserInpu
 	if in.Role == string(domain.RoleAdmin) {
 		role = domain.RoleAdmin
 	}
+	if err := a.checkSeats(ctx, admin.OrgID); err != nil {
+		return nil, err
+	}
 	hash, err := a.Hasher.Hash(in.Password)
 	if err != nil {
 		return nil, err
@@ -161,6 +164,11 @@ func (a *App) UpdateUser(ctx context.Context, admin *domain.User, id int64, in U
 			if u.ID == admin.ID && domain.UserStatus(*in.Status) == domain.StatusSuspended {
 				return nil, domain.Invalid("you cannot suspend yourself")
 			}
+			if domain.UserStatus(*in.Status) == domain.StatusActive && u.Status != domain.StatusActive && !u.IsBot() {
+				if err := a.checkSeats(ctx, admin.OrgID); err != nil {
+					return nil, err
+				}
+			}
 			u.Status, changes["status"] = domain.UserStatus(*in.Status), *in.Status
 		default:
 			return nil, domain.Invalid("status must be active or suspended")
@@ -209,6 +217,48 @@ func (a *App) AuditLog(ctx context.Context, admin *domain.User, limit int) ([]do
 		limit = a.Limits.DirectoryPageMax
 	}
 	return a.Audit.List(ctx, admin.OrgID, limit)
+}
+
+// LicenseStatus is what the admin page shows.
+type LicenseStatus struct {
+	Seats     int    `json:"seats"` // 0 = unlimited
+	UsedSeats int    `json:"used_seats"`
+	Status    string `json:"status"`
+}
+
+// License reports seat usage against the license. Admin only.
+func (a *App) LicenseInfo(ctx context.Context, admin *domain.User) (*LicenseStatus, error) {
+	if !admin.IsAdmin() {
+		return nil, domain.ErrForbidden
+	}
+	used, err := a.Users.CountActiveHumans(ctx, admin.OrgID)
+	if err != nil {
+		return nil, err
+	}
+	seats, status := 0, "unlimited"
+	if a.License != nil {
+		seats, status = a.License.Seats()
+	}
+	return &LicenseStatus{Seats: seats, UsedSeats: used, Status: status}, nil
+}
+
+// checkSeats refuses to add a human user beyond the licensed seat count.
+func (a *App) checkSeats(ctx context.Context, orgID int64) error {
+	if a.License == nil {
+		return nil
+	}
+	seats, status := a.License.Seats()
+	if seats <= 0 {
+		return nil
+	}
+	used, err := a.Users.CountActiveHumans(ctx, orgID)
+	if err != nil {
+		return err
+	}
+	if used >= seats {
+		return domain.Invalid("seat limit reached (%d of %d, %s)", used, seats, status)
+	}
+	return nil
 }
 
 func (a *App) checkEmailDomain(ctx context.Context, email string) error {

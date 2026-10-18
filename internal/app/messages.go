@@ -155,4 +155,5 @@ func (a *App) fanOut(ctx context.Context, chatID int64, m *domain.Message) {
 		return
 	}
 	a.Hub.Publish(ids, Event{Type: "msg", Payload: m})
+	a.pushToBots(ctx, m)
 }

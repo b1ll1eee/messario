@@ -130,9 +130,40 @@ export const useChats = defineStore('chats', () => {
     }
   }
 
+  /** Upload a file as a message. Shown as pending until the server answers. */
+  async function sendFile(chatId: number, file: File) {
+    const clientMsgId = crypto.randomUUID()
+    const local: Message = {
+      id: 0, chat_id: chatId, seq: Number.MAX_SAFE_INTEGER, sender_id: auth.user!.id, client_msg_id: clientMsgId,
+      kind: 'file', body: file.name, attachment: { file_id: 0, name: file.name, size: file.size, mime: file.type },
+      created_at: new Date().toISOString(), pending: true,
+    }
+    ;(messages.value[chatId] ??= []).push(local)
+    const form = new FormData()
+    form.append('file', file)
+    form.append('client_msg_id', clientMsgId)
+    try {
+      const res = await fetch(`/api/chats/${chatId}/files`, { method: 'POST', body: form, credentials: 'same-origin' })
+      if (!res.ok) {
+        const e = (await res.json().catch(() => null)) as { error?: { message?: string } } | null
+        throw new Error(e?.error?.message ?? res.statusText)
+      }
+      insertMessage((await res.json()) as Message)
+    } catch (e) {
+      local.pending = false
+      local.failed = true
+      throw e
+    }
+  }
+
   function retry(chatId: number, clientMsgId: string) {
     const m = messages.value[chatId]?.find((x) => x.client_msg_id === clientMsgId)
     if (!m) return
+    if (m.kind === 'file') {
+      // The bytes are gone; remove the placeholder and let the user pick again.
+      messages.value[chatId] = messages.value[chatId]!.filter((x) => x !== m)
+      return
+    }
     m.failed = false
     m.pending = true
     outbox.value.push({ chatId, clientMsgId, body: m.body })
@@ -296,7 +327,7 @@ export const useChats = defineStore('chats', () => {
 
   return {
     list, messages, members, hasOlder, activeId, active, activeMessages, myMembership, connected, peerReadSeq,
-    loadList, open, loadOlder, loadMembers, send, retry, markRead, readInfo,
+    loadList, open, loadOlder, loadMembers, send, sendFile, retry, markRead, readInfo,
     openDirect, createGroup, addMembers, removeMember, rename, start, stop,
   }
 })

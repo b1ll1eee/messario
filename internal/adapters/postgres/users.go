@@ -126,6 +126,12 @@ func (r *UserRepo) ByBotToken(ctx context.Context, tokenHash string) (*domain.Us
 	return scanUser(r.db.pool.QueryRow(ctx, `SELECT `+userCols+` FROM users WHERE bot_token_hash=$1`, tokenHash))
 }
 
+func (r *UserRepo) CountActiveHumans(ctx context.Context, orgID int64) (int, error) {
+	var n int
+	err := r.db.pool.QueryRow(ctx, `SELECT count(*) FROM users WHERE org_id=$1 AND kind='user' AND status='active'`, orgID).Scan(&n)
+	return n, err
+}
+
 // SessionRepo implements app.SessionRepo.
 type SessionRepo struct{ db *DB }
 

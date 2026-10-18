@@ -4,7 +4,7 @@ import { get, patch, post } from '../api/http'
 import { useUsers } from '../stores/users'
 import { fullTime } from '../format'
 import { t } from '../strings'
-import type { User } from '../types'
+import type { LicenseStatus, User } from '../types'
 import Avatar from '../components/Avatar.vue'
 
 interface AuditEntry { id: number; actor_id: number; action: string; target: string; meta?: Record<string, unknown>; created_at: string }
@@ -21,8 +21,12 @@ const newUser = ref({ username: '', display_name: '', email: '', department: '',
 const newBot = ref({ username: '', display_name: '' })
 const token = ref<{ name: string; value: string } | null>(null)
 const copied = ref(false)
+const license = ref<LicenseStatus | null>(null)
 
-onMounted(() => users.load())
+onMounted(() => {
+  void users.load()
+  void get<LicenseStatus>('/api/admin/license').then((l) => (license.value = l)).catch(() => {})
+})
 
 async function run(fn: () => Promise<void>) {
   error.value = ''
@@ -84,6 +88,11 @@ async function copyToken() {
       </nav>
     </header>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
+    <div v-if="license" class="license" :class="{ full: license.seats > 0 && license.used_seats >= license.seats }">
+      <span class="label">{{ t.admin.license }}</span>
+      <span>{{ license.status }}</span>
+      <span class="muted">· {{ t.admin.seatsUsed }} {{ license.used_seats }}<template v-if="license.seats > 0"> / {{ license.seats }}</template><template v-else> ({{ t.admin.unlimited }})</template></span>
+    </div>
 
     <div v-if="token" class="token">
       <div><strong>{{ token.name }}</strong> · {{ t.admin.tokenOnce }}</div>
@@ -183,4 +192,6 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: 
 .token { border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent-soft-ink); border-radius: var(--radius-lg); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
 .token code { font-size: 13px; word-break: break-all; background: var(--surface); color: var(--ink); padding: 8px 10px; border-radius: 8px; }
 .row { display: flex; gap: 8px; }
+.license { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); font-size: 13px; }
+.license.full { border-color: var(--danger); background: var(--danger-soft); }
 </style>

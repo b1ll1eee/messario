@@ -4,6 +4,7 @@ package app
 
 import (
 	"context"
+	"io"
 	"time"
 
 	"github.com/b1ll1eee/nuntio-message/internal/domain"
@@ -28,6 +29,8 @@ type UserRepo interface {
 	SetPassword(ctx context.Context, id int64, hash string) error
 	SetBotToken(ctx context.Context, id int64, tokenHash string) error
 	ByBotToken(ctx context.Context, tokenHash string) (*domain.User, error)
+	// CountActiveHumans counts non-bot users with status active (licensed seats in use).
+	CountActiveHumans(ctx context.Context, orgID int64) (int, error)
 }
 
 // SessionRepo stores login sessions keyed by a hash of the cookie token.
@@ -71,6 +74,42 @@ type MessageRepo interface {
 	// UpdatesForBot returns messages with id > afterID in chats the bot belongs to,
 	// excluding the bot's own messages, oldest first.
 	UpdatesForBot(ctx context.Context, botID, afterID int64, limit int) ([]domain.Message, error)
+}
+
+// FileRepo stores file metadata.
+type FileRepo interface {
+	Create(ctx context.Context, f *domain.File) error
+	ByID(ctx context.Context, id int64) (*domain.File, error)
+	Delete(ctx context.Context, id int64) error
+}
+
+// FileStore stores file bytes (local disk, S3, MinIO, R2).
+type FileStore interface {
+	Put(ctx context.Context, key string, r io.Reader, size int64, contentType string) error
+	Get(ctx context.Context, key string) (io.ReadCloser, error)
+	Delete(ctx context.Context, key string) error
+}
+
+// WebhookRepo stores bot webhook settings.
+type WebhookRepo interface {
+	Set(ctx context.Context, w *domain.Webhook) error
+	Get(ctx context.Context, botID int64) (*domain.Webhook, error)
+	Delete(ctx context.Context, botID int64) error
+	// ForChat returns the webhooks of every bot that is a member of chatID.
+	ForChat(ctx context.Context, chatID int64) ([]domain.Webhook, error)
+}
+
+// WebhookDispatcher delivers a payload to a bot's webhook asynchronously
+// (with retries); it must not block the caller.
+type WebhookDispatcher interface {
+	Deliver(w domain.Webhook, payload any)
+}
+
+// Licensor answers how many human seats this install may have.
+type Licensor interface {
+	// Seats returns the allowed number of active human users (0 = unlimited)
+	// and a human-readable status for admins.
+	Seats() (seats int, status string)
 }
 
 // AuditRepo appends audit entries.

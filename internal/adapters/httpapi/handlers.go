@@ -343,3 +343,12 @@ func (s *Server) adminAudit(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, entries)
 }
+
+func (s *Server) adminLicense(w http.ResponseWriter, r *http.Request) {
+	info, err := s.app.LicenseInfo(r.Context(), app.UserFrom(r.Context()))
+	if err != nil {
+		s.writeAppError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, info)
+}

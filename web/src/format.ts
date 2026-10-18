@@ -56,3 +56,9 @@ export function avatarStyle(id: number) {
   const [bg, fg] = AVATAR_TINTS[Math.abs(id) % AVATAR_TINTS.length]!
   return { background: bg, color: fg }
 }
+
+export function fileSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`
+}

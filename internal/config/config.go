@@ -19,10 +19,40 @@ type Config struct {
 	SessionTTL   time.Duration // how long a login lasts
 	LogLevel     string        // debug|info|warn|error
 
-	Limits Limits
-	WS     WS
-	Bot    Bot
-	Obs    Obs
+	Limits  Limits
+	WS      WS
+	Bot     Bot
+	Obs     Obs
+	Files   Files
+	Webhook Webhook
+	License License
+}
+
+// Files selects where uploads live: a local directory (default) or S3.
+type Files struct {
+	MaxBytes    int64  // largest upload
+	Dir         string // local directory; used when S3Endpoint is empty
+	S3Endpoint  string // host[:port] of S3/MinIO/R2
+	S3AccessKey string
+	S3SecretKey string
+	S3Bucket    string
+	S3Region    string
+	S3UseSSL    bool
+}
+
+// Webhook bounds bot webhook deliveries.
+type Webhook struct {
+	Timeout     time.Duration
+	Attempts    int
+	Backoff     time.Duration
+	Concurrency int
+}
+
+// License holds the offline license key and the vendor public key that verifies it.
+type License struct {
+	Key       string // the customer's key; empty = community edition
+	PublicKey string // base64url ed25519 public key (compiled-in default, overridable)
+	FreeSeats int    // seats allowed without a key
 }
 
 // Obs points at Vindice, the team's observability platform. Empty endpoint = off.
@@ -60,6 +90,11 @@ type Bot struct {
 	UpdatesPageMax  int
 }
 
+// DefaultLicensePublicKey is the vendor's ed25519 public key (base64url).
+// Replace it with your own from `licensegen keygen` before selling; it can
+// also be overridden at runtime with NUNTIO_LICENSE_PUBLIC_KEY.
+const DefaultLicensePublicKey = ""
+
 // Load reads NUNTIO_* variables with defaults.
 func Load() (Config, error) {
 	c := Config{
@@ -95,6 +130,27 @@ func Load() (Config, error) {
 			VindiceAPIKey:   env("NUNTIO_VINDICE_API_KEY", env("VINDICE_API_KEY", "")),
 			Environment:     env("NUNTIO_ENVIRONMENT", "production"),
 			ServiceName:     env("NUNTIO_SERVICE_NAME", "nuntio"),
+		},
+		Files: Files{
+			MaxBytes:    int64(envInt("NUNTIO_MAX_FILE_MB", 25)) << 20,
+			Dir:         env("NUNTIO_FILES_DIR", "./data/files"),
+			S3Endpoint:  env("NUNTIO_S3_ENDPOINT", ""),
+			S3AccessKey: env("NUNTIO_S3_ACCESS_KEY", ""),
+			S3SecretKey: env("NUNTIO_S3_SECRET_KEY", ""),
+			S3Bucket:    env("NUNTIO_S3_BUCKET", "nuntio"),
+			S3Region:    env("NUNTIO_S3_REGION", "us-east-1"),
+			S3UseSSL:    envBool("NUNTIO_S3_SSL", true),
+		},
+		Webhook: Webhook{
+			Timeout:     envDuration("NUNTIO_WEBHOOK_TIMEOUT", 10*time.Second),
+			Attempts:    envInt("NUNTIO_WEBHOOK_ATTEMPTS", 3),
+			Backoff:     envDuration("NUNTIO_WEBHOOK_BACKOFF", 2*time.Second),
+			Concurrency: envInt("NUNTIO_WEBHOOK_CONCURRENCY", 16),
+		},
+		License: License{
+			Key:       env("NUNTIO_LICENSE", ""),
+			PublicKey: env("NUNTIO_LICENSE_PUBLIC_KEY", DefaultLicensePublicKey),
+			FreeSeats: envInt("NUNTIO_FREE_SEATS", 10),
 		},
 	}
 	if c.DatabaseURL == "" {

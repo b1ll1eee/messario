@@ -1,0 +1,4 @@
+{$NUNTIO_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy nuntio:8080
+}

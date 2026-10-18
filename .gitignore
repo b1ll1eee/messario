@@ -9,3 +9,6 @@ web/dist/
 .claude/
 internal/web/dist/*
 !internal/web/dist/.gitkeep
+/data/
+deploy/.env
+web/dist/

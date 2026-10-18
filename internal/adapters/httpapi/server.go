@@ -26,6 +26,7 @@ type Config struct {
 	BotBurst       int
 	BotLongPoll    time.Duration
 	BotUpdatesMax  int
+	MaxFileBytes   int64
 }
 
 // Server holds the handlers' dependencies.
@@ -71,6 +72,8 @@ func (s *Server) Routes() http.Handler {
 	mux.Handle("PATCH /api/chats/{id}", auth(s.renameChat))
 	mux.Handle("GET /api/chats/{id}/messages", auth(s.history))
 	mux.Handle("POST /api/chats/{id}/messages", auth(s.sendMessage))
+	mux.Handle("POST /api/chats/{id}/files", auth(s.uploadFile))
+	mux.Handle("GET /api/files/{id}", auth(s.downloadFile))
 	mux.Handle("POST /api/chats/{id}/read", auth(s.markRead))
 	mux.Handle("GET /api/chats/{id}/read", auth(s.readInfo))
 	mux.Handle("GET /api/chats/{id}/members", auth(s.members))
@@ -82,6 +85,7 @@ func (s *Server) Routes() http.Handler {
 	mux.Handle("POST /api/admin/bots", auth(s.adminCreateBot))
 	mux.Handle("POST /api/admin/bots/{id}/token", auth(s.adminBotToken))
 	mux.Handle("GET /api/admin/audit", auth(s.adminAudit))
+	mux.Handle("GET /api/admin/license", auth(s.adminLicense))
 
 	mux.Handle("GET /ws", auth(s.ws.ServeHTTP))
 

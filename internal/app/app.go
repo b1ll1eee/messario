@@ -23,6 +23,7 @@ type Limits struct {
 	HistoryPageMax    int
 	DirectoryPageMax  int
 	SessionTTL        time.Duration
+	MaxFileBytes      int64
 }
 
 // Deps are the ports the use cases need.
@@ -33,6 +34,11 @@ type Deps struct {
 	Chats    ChatRepo
 	Messages MessageRepo
 	Audit    AuditRepo
+	Files    FileRepo
+	Store    FileStore
+	Webhooks WebhookRepo
+	Dispatch WebhookDispatcher
+	License  Licensor
 	Hub      Hub
 	Hasher   PasswordHasher
 	Now      Clock

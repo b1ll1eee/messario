@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"sync"
@@ -15,6 +16,10 @@ import (
 //   POST /bot/<token>/sendMessage   {"chat_id": 1, "text": "...", "client_msg_id": "..."}
 //   GET  /bot/<token>/getMe
 //   GET  /bot/<token>/getUpdates?offset=<last id + 1>&limit=100&timeout=25
+//   POST /bot/<token>/sendDocument  multipart: chat_id, document
+//   POST /bot/<token>/setWebhook    {"url": "https://...", "secret": "..."}
+//   POST /bot/<token>/deleteWebhook
+//   GET  /bot/<token>/getWebhookInfo
 // Responses: {"ok": true, "result": ...} or {"ok": false, "error_code": 400, "description": "..."}.
 
 type botOK struct {
@@ -85,6 +90,58 @@ func (s *Server) botAPI(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeJSON(w, http.StatusOK, botOK{OK: true, Result: msgs})
+	case "sendDocument":
+		if r.Method != http.MethodPost {
+			writeBotError(w, domain.Invalid("sendDocument requires POST"))
+			return
+		}
+		if !s.limiter.allow(bot.ID) {
+			writeJSON(w, http.StatusTooManyRequests, botErr{OK: false, ErrorCode: 429, Description: "too many requests"})
+			return
+		}
+		if err := r.ParseMultipartForm(1 << 20); err != nil {
+			writeBotError(w, domain.Invalid("invalid multipart body"))
+			return
+		}
+		chatID, _ := strconv.ParseInt(r.FormValue("chat_id"), 10, 64)
+		m, err := s.readUpload(w, r, bot, chatID, "document")
+		if err != nil {
+			writeBotError(w, err)
+			return
+		}
+		writeJSON(w, http.StatusOK, botOK{OK: true, Result: m})
+	case "setWebhook":
+		var in struct {
+			URL    string `json:"url"`
+			Secret string `json:"secret"`
+		}
+		if err := decodeJSON(w, r, &in); err != nil {
+			writeBotError(w, err)
+			return
+		}
+		hook, err := s.app.SetWebhook(r.Context(), bot, in.URL, in.Secret)
+		if err != nil {
+			writeBotError(w, err)
+			return
+		}
+		writeJSON(w, http.StatusOK, botOK{OK: true, Result: hook})
+	case "deleteWebhook":
+		if err := s.app.DeleteWebhook(r.Context(), bot); err != nil {
+			writeBotError(w, err)
+			return
+		}
+		writeJSON(w, http.StatusOK, botOK{OK: true, Result: true})
+	case "getWebhookInfo":
+		hook, err := s.app.WebhookInfo(r.Context(), bot)
+		if err != nil {
+			if errors.Is(err, domain.ErrNotFound) {
+				writeJSON(w, http.StatusOK, botOK{OK: true, Result: map[string]string{"url": ""}})
+				return
+			}
+			writeBotError(w, err)
+			return
+		}
+		writeJSON(w, http.StatusOK, botOK{OK: true, Result: hook})
 	case "getChats":
 		chats, err := s.app.ListChats(r.Context(), bot)
 		if err != nil {

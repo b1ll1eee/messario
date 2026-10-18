@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useAuth } from '../stores/auth'
 import { useChats } from '../stores/chats'
 import { useUsers } from '../stores/users'
-import { fullTime, timeOf } from '../format'
+import { fileSize, fullTime, timeOf } from '../format'
 import { t } from '../strings'
 import type { Message, ReadInfo } from '../types'
 import Avatar from './Avatar.vue'
@@ -74,7 +74,16 @@ async function toggleReaders() {
         <span v-if="isBot" class="badge bot">BOT</span>
         <time class="time" :title="fullTime(message.created_at)">{{ timeOf(message.created_at) }}</time>
       </div>
-      <p class="body">{{ message.body }}</p>
+      <template v-if="message.kind === 'file' && message.attachment">
+        <a v-if="message.attachment.mime.startsWith('image/') && message.attachment.file_id" :href="`/api/files/${message.attachment.file_id}`" target="_blank" rel="noopener" class="image">
+          <img :src="`/api/files/${message.attachment.file_id}`" :alt="message.attachment.name" loading="lazy" />
+        </a>
+        <a v-else :href="message.attachment.file_id ? `/api/files/${message.attachment.file_id}` : undefined" class="file" :download="message.attachment.name">
+          <span class="ext">{{ (message.attachment.name.split('.').pop() ?? 'FILE').slice(0, 4).toUpperCase() }}</span>
+          <span class="fmeta"><span class="fname">{{ message.attachment.name }}</span><span class="fsize faint">{{ fileSize(message.attachment.size) }}</span></span>
+        </a>
+      </template>
+      <p v-else class="body">{{ message.body }}</p>
       <div v-if="message.failed" class="status error">
         {{ t.chat.failed }} · <button type="button" class="link" @click="chats.retry(message.chat_id, message.client_msg_id!)">{{ t.chat.retry }}</button>
       </div>
@@ -119,4 +128,12 @@ async function toggleReaders() {
 .link { border: 0; background: transparent; padding: 0; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; font-size: 12px; }
 .link:hover { color: var(--ink); }
 .readers { color: var(--faint); }
+.image { display: inline-block; max-width: 360px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin-top: 2px; }
+.image img { display: block; max-width: 100%; max-height: 320px; object-fit: contain; background: var(--surface-2); }
+.file { display: inline-flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); max-width: 360px; margin-top: 2px; }
+.file:hover { border-color: var(--border-strong); }
+.ext { width: 34px; height: 34px; border-radius: 8px; background: var(--ink); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex: 0 0 34px; }
+.fmeta { display: flex; flex-direction: column; min-width: 0; }
+.fname { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fsize { font-size: 12px; }
 </style>
