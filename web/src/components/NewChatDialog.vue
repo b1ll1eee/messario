@@ -69,16 +69,16 @@ async function create() {
     <div class="dialog" role="dialog" aria-modal="true">
       <h2>{{ t.newChat.title }}</h2>
       <div class="tabs">
-        <button type="button" class="btn sm" :class="{ primary: mode === 'person' }" @click="mode = 'person'">{{ t.newChat.person }}</button>
-        <button type="button" class="btn sm" :class="{ primary: mode === 'group' }" @click="mode = 'group'">{{ t.newChat.group }}</button>
-        <button v-if="auth.user?.role === 'admin'" type="button" class="btn sm" :class="{ primary: mode === 'channel' }" @click="mode = 'channel'">{{ t.newChat.channel }}</button>
+        <button type="button" class="chip" :class="{ on: mode === 'person' }" @click="mode = 'person'">{{ t.newChat.person }}</button>
+        <button type="button" class="chip" :class="{ on: mode === 'group' }" @click="mode = 'group'">{{ t.newChat.group }}</button>
+        <button v-if="auth.user?.role === 'admin'" type="button" class="chip" :class="{ on: mode === 'channel' }" @click="mode = 'channel'">{{ t.newChat.channel }}</button>
       </div>
       <input v-if="mode !== 'person'" v-model="title" class="input" :placeholder="mode === 'group' ? t.newChat.groupTitle : t.newChat.channelTitle" />
       <input v-model="query" class="input" type="search" :placeholder="t.newChat.search" />
       <ul class="people">
         <li v-for="u in candidates" :key="u.id">
           <button type="button" class="person" :class="{ on: picked.has(u.id) }" :disabled="busy" @click="mode === 'person' ? openDirect(u.id) : toggle(u.id)">
-            <Avatar :id="u.id" :name="u.display_name" :kind="u.kind" size="sm" />
+            <Avatar :id="u.id" :name="u.display_name" :kind="u.kind" :size="34" />
             <span class="pname">{{ u.display_name }}</span>
             <span class="muted small">{{ u.department || u.username }}</span>
             <span v-if="u.kind === 'bot'" class="badge bot">BOT</span>
@@ -97,12 +97,12 @@ async function create() {
 
 <style scoped>
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-.people { max-height: 320px; overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); }
-.person { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 0; background: transparent; text-align: left; min-height: 44px; }
-.person:hover { background: var(--surface-2); }
+.people { max-height: 320px; overflow: auto; border-radius: var(--r-card); background: var(--chip); padding: 6px; }
+.person { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 0; background: transparent; text-align: left; min-height: 48px; border-radius: 12px; }
+.person:hover { background: var(--chip-strong); }
 .person.on { background: var(--accent-soft); }
-.pname { font-weight: 500; }
+.pname { font-weight: 700; }
 .small { font-size: 12px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.check { color: var(--accent); font-weight: 700; }
+.check { color: var(--accent); font-weight: 800; }
 .actions { display: flex; justify-content: flex-end; gap: 8px; }
 </style>

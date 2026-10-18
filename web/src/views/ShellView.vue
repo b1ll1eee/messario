@@ -14,12 +14,6 @@ const route = useRoute()
 const showDetail = computed(() => route.name !== 'home')
 
 onMounted(async () => {
-  try {
-    const saved = localStorage.getItem('theme')
-    if (saved === 'dark' || saved === 'light') document.documentElement.dataset.theme = saved
-  } catch {
-    /* ignore */
-  }
   await Promise.all([users.load(), chats.loadList()])
   chats.start()
 })
@@ -31,18 +25,20 @@ onBeforeUnmount(() => chats.stop())
   <div class="shell" :class="{ detail: showDetail }">
     <Rail />
     <ChatList class="col-list" />
-    <main class="col-detail">
+    <main class="col-detail panel">
       <RouterView />
     </main>
   </div>
 </template>
 
 <style scoped>
-.shell { display: flex; height: 100%; min-height: 0; }
-.col-detail { flex: 1 1 auto; min-width: 0; display: flex; position: relative; background: var(--surface); }
+.shell { display: flex; gap: var(--gap); height: 100%; min-height: 0; padding: var(--gap); }
+.col-detail { flex: 1 1 auto; min-width: 0; display: flex; position: relative; overflow: hidden; }
 @media (max-width: 767px) {
+  .shell { padding: 0; gap: 0; }
   .shell > :deep(.rail) { display: none; }
   .shell:not(.detail) .col-detail { display: none; }
   .shell.detail .col-list { display: none; }
+  .col-detail, .shell :deep(.list) { border-radius: 0; border: 0; }
 }
 </style>

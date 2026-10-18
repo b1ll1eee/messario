@@ -52,23 +52,23 @@ people, your internal systems posting through the bot API.
 | Bot API shaped like Telegram's: `sendMessage`, `getUpdates`, webhooks | Developers, ERP/HR/monitoring integrations |
 | Admin page: users, suspend on exit, bots and tokens, audit log | IT |
 | Offline license keys with seat limits; free community tier (10 seats) | The vendor and the buyer |
-| Light and dark, desktop and phone, Thai and English | Thai organizations |
+| Dark and light themes, desktop and phone, Thai and English | Thai organizations |
 
 <table>
   <tr>
-    <td><img src="docs/desktop.png" alt="Desktop: a team conversation with a bot message and the room panel"></td>
-    <td><img src="docs/desktop-dark.png" alt="The same conversation in dark mode"></td>
+    <td><img src="docs/desktop.png" alt="Desktop, dark: a team conversation with a bot message, read receipts shown as avatars"></td>
+    <td><img src="docs/desktop-light.png" alt="The same conversation in the light theme"></td>
   </tr>
   <tr>
     <td align="center">Team chat, read receipts, bots in the room</td>
-    <td align="center">Dark mode follows the OS or a toggle</td>
+    <td align="center">Light theme, one tap away</td>
   </tr>
   <tr>
-    <td><img src="docs/channel.png" alt="A company announcement channel where posts render as cards"></td>
+    <td><img src="docs/desktop-panel.png" alt="The room panel: members, bots and management actions"></td>
     <td align="center"><img src="docs/mobile.png" width="260" alt="Phone layout of a conversation"></td>
   </tr>
   <tr>
-    <td align="center">Announcement channels: admins post, everyone reads</td>
+    <td align="center">Room panel: members, bots, add or remove</td>
     <td align="center">Works on a phone from the same URL</td>
   </tr>
 </table>

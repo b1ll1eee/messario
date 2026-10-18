@@ -82,9 +82,9 @@ async function copyToken() {
     <header>
       <h2>{{ t.admin.title }}</h2>
       <nav class="tabs">
-        <button type="button" class="btn sm" :class="{ primary: tab === 'users' }" @click="tab = 'users'">{{ t.admin.users }}</button>
-        <button type="button" class="btn sm" :class="{ primary: tab === 'bots' }" @click="tab = 'bots'">{{ t.admin.bots }}</button>
-        <button type="button" class="btn sm" :class="{ primary: tab === 'audit' }" @click="(tab = 'audit'), loadAudit()">{{ t.admin.audit }}</button>
+        <button type="button" class="chip" :class="{ on: tab === 'users' }" @click="tab = 'users'">{{ t.admin.users }}</button>
+        <button type="button" class="chip" :class="{ on: tab === 'bots' }" @click="tab = 'bots'">{{ t.admin.bots }}</button>
+        <button type="button" class="chip" :class="{ on: tab === 'audit' }" @click="(tab = 'audit'), loadAudit()">{{ t.admin.audit }}</button>
       </nav>
     </header>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
@@ -118,7 +118,7 @@ async function copyToken() {
         <thead><tr><th></th><th>{{ t.admin.displayName }}</th><th>{{ t.admin.username }}</th><th>{{ t.admin.department }}</th><th>{{ t.admin.role }}</th><th>{{ t.admin.status }}</th><th></th></tr></thead>
         <tbody>
           <tr v-for="u in people" :key="u.id">
-            <td><Avatar :id="u.id" :name="u.display_name" size="sm" /></td>
+            <td><Avatar :id="u.id" :name="u.display_name" :size="30" /></td>
             <td>{{ u.display_name }}</td>
             <td class="muted">{{ u.username }}</td>
             <td class="muted">{{ u.department }}</td>
@@ -146,7 +146,7 @@ async function copyToken() {
         <thead><tr><th></th><th>{{ t.admin.displayName }}</th><th>{{ t.admin.username }}</th><th>{{ t.admin.status }}</th><th></th></tr></thead>
         <tbody>
           <tr v-for="b in bots" :key="b.id">
-            <td><Avatar :id="b.id" :name="b.display_name" kind="bot" size="sm" /></td>
+            <td><Avatar :id="b.id" :name="b.display_name" kind="bot" :size="30" /></td>
             <td>{{ b.display_name }}</td>
             <td class="muted">{{ b.username }}</td>
             <td><span class="badge" :class="{ bot: b.status === 'active' }">{{ b.status === 'active' ? t.admin.active : t.admin.suspended }}</span></td>
@@ -177,11 +177,11 @@ async function copyToken() {
 </template>
 
 <style scoped>
-.admin { flex-grow: 1; overflow: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+.admin { flex-grow: 1; overflow: auto; padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
 header { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
 .tabs { display: flex; gap: 8px; }
-.form { display: flex; flex-direction: column; gap: 8px; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg); }
+.form { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--r-card); background: var(--chip); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); padding: 8px 10px; border-bottom: 1px solid var(--border); }
@@ -189,9 +189,9 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: 
 .actions { display: flex; gap: 6px; }
 .nowrap { white-space: nowrap; }
 .small { font-size: 12px; }
-.token { border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent-soft-ink); border-radius: var(--radius-lg); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
-.token code { font-size: 13px; word-break: break-all; background: var(--surface); color: var(--ink); padding: 8px 10px; border-radius: 8px; }
+.token { background: var(--accent-soft); color: var(--ink); border-radius: var(--r-card); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.token code { font-size: 13px; word-break: break-all; background: var(--panel-solid); color: var(--ink); padding: 8px 10px; border-radius: 10px; }
 .row { display: flex; gap: 8px; }
-.license { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); font-size: 13px; }
+.license { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border-radius: var(--r-ctl); background: var(--chip); font-size: 13px; font-weight: 600; }
 .license.full { border-color: var(--danger); background: var(--danger-soft); }
 </style>

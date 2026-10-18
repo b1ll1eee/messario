@@ -44,12 +44,12 @@ export function initials(name: string) {
 }
 
 const AVATAR_TINTS = [
-  ['#dce6f2', '#26405e'],
-  ['#f2dcdc', '#6b2626'],
-  ['#e9e2f5', '#43306b'],
-  ['#d6e3d0', '#2e4a28'],
-  ['#f5e6cc', '#6b4a12'],
-  ['#d9ecef', '#1f5560'],
+  ['#dbeafe', '#1e3a8a'],
+  ['#fce7f3', '#9d174d'],
+  ['#ede9fe', '#4c1d95'],
+  ['#dcfce7', '#14532d'],
+  ['#fef3c7', '#78350f'],
+  ['#cffafe', '#155e75'],
 ] as const
 
 export function avatarStyle(id: number) {
