@@ -74,62 +74,79 @@ def hero(t):
 
 # ---------------------------------------------------------------- animated demo
 def demo(t):
-    """A conversation that plays itself: messages fade in one after another, then loops."""
-    W, H = 1200, 420
-    rows = [("ณศ", "ณัฐพล ศรีสุข", "09:31", "เมื่อคืน merge PR ระบบ invoice เข้า main แล้วครับ บ่ายนี้จะ deploy production", "#dce6f2", "#26405e", False),
-            ("วท", "วริศรา ทองดี", "09:34", "ไม่มีค่ะ ของฝั่งหน้าบ้านเรียบร้อยหมดแล้ว", "#e9e2f5", "#43306b", False),
-            ("", "Deploy Bot", "13:02", "production v1.4.2 สำเร็จ · 1 นาที 48 วิ · a81f2c9 invoice: fix VAT rounding", "", "", True),
-            ("ณศ", "ณัฐพล ศรีสุข", "13:05", "ขึ้นแล้วครับ ฝากทีมขายช่วยเช็กหน้า invoice ด้วย", "#dce6f2", "#26405e", False),
-            ("วท", "วริศรา ทองดี", "13:07", "เช็กแล้ว ผ่านค่ะ ✓", "#e9e2f5", "#43306b", False)]
+    """A conversation that plays itself in the app's bubble style; loops."""
+    W, H = 1200, 440
     cycle = 11.0
+    grad_id = "own-grad"
+    rows = [
+        dict(kind="other", ini="ณศ", bg="#fce7f3", fg="#9d174d", name="ณัฐพล ศรีสุข", time="09:31",
+             body="เมื่อคืน merge PR ระบบ invoice เข้า main แล้วครับ บ่ายนี้จะ deploy production", w=640),
+        dict(kind="own", time="09:34", body="ไม่มีค่ะ ของฝั่งหน้าบ้านเรียบร้อยหมดแล้ว", w=380),
+        dict(kind="bot", name="Deploy Bot", time="13:02", body="production v1.4.2 สำเร็จ · 1m 48s · a81f2c9 invoice: fix VAT rounding", w=600),
+        dict(kind="other", ini="ณศ", bg="#fce7f3", fg="#9d174d", name="ณัฐพล ศรีสุข", time="13:05",
+             body="ขึ้นแล้วครับ ฝากทีมขายช่วยเช็กหน้า invoice ด้วย", w=470),
+        dict(kind="own", time="13:07", body="เช็กแล้ว ผ่านค่ะ ✓", w=200),
+    ]
     p = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" '
          f'aria-label="An animated Messario conversation: two teammates and a deploy bot in a group chat.">',
-         f'<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="16" fill="{t["card"]}" stroke="{t["line"]}"/>',
-         f'<rect x="1" y="1" width="{W-2}" height="56" rx="16" fill="{t["bg"]}"/>',
-         f'<rect x="1" y="40" width="{W-2}" height="17" fill="{t["bg"]}"/>',
-         f'<line x1="1" y1="57" x2="{W-1}" y2="57" stroke="{t["line"]}"/>',
-         f'<rect x="24" y="12" width="34" height="34" rx="10" fill="#dce6f2"/>',
-         text(t, 41, 34, "ที", 13, "#26405e", "middle", 600),
-         text(t, 70, 29, "ทีมพัฒนา", 15, "text", weight=700),
-         text(t, 70, 46, "4 คน · 1 บอท", 12, "dim")]
-    y = 92
-    for i, (ini, name, time, body, bg, fg, bot) in enumerate(rows):
+         f'<defs><linearGradient id="{grad_id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2fb5a5"/><stop offset="1" stop-color="#1d8f84"/></linearGradient></defs>',
+         f'<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="22" fill="{t["card"]}" stroke="{t["line"]}"/>',
+         # header: stacked avatars + title
+         f'<circle cx="46" cy="36" r="17" fill="#dbeafe"/>' + text(t, 46, 41, "ณ", 12, "#1e3a8a", "middle", 800),
+         f'<circle cx="68" cy="36" r="17" fill="#fce7f3" stroke="{t["card"]}" stroke-width="2.5"/>' + text(t, 68, 41, "ว", 12, "#9d174d", "middle", 800),
+         f'<circle cx="90" cy="36" r="17" fill="{t["soft"]}" stroke="{t["card"]}" stroke-width="2.5"/>' + text(t, 90, 41, "+10", 10, "text", "middle", 800),
+         text(t, 120, 32, "ทีมพัฒนา", 16, "text", weight=800),
+         f'<circle cx="124" cy="46" r="3.5" fill="#34d399"/>' + text(t, 132, 50, "ออนไลน์ 7 · 12 คน · 2 บอท", 12, "muted", weight=600),
+         f'<line x1="1" y1="68" x2="{W-1}" y2="68" stroke="{t["line"]}"/>']
+    y = 96
+    last_own_y = 0
+    for i, r in enumerate(rows):
         t0 = 0.6 + i * 1.6
-        g = [f'<g opacity="0">',
-             f'<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;{t0/cycle:.3f};{(t0+0.4)/cycle:.3f};0.93;1" dur="{cycle}s" repeatCount="indefinite"/>',
-             f'<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="0;{t0/cycle:.3f};{(t0+0.4)/cycle:.3f};0.93;1" dur="{cycle}s" repeatCount="indefinite"/>']
-        if bot:
-            g.append(f'<rect x="24" y="{y-20}" width="30" height="30" rx="9" fill="{t["tealsoft"]}"/>')
-            g.append(f'<g transform="translate(31 {y-13}) scale(0.25)" fill="none" stroke="{t["tealsoftink"]}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">'
-                     f'<rect x="4" y="8" width="56" height="44" rx="12"/><path d="M32 -4v12"/><circle cx="22" cy="30" r="3"/><circle cx="42" cy="30" r="3"/></g>')
-            g.append(text(t, 68, y - 2, name, 14, "text", weight=600))
-            g.append(f'<rect x="{68 + 7.6*len(name) + 10}" y="{y-14}" width="32" height="16" rx="4" fill="{t["tealsoft"]}"/>')
-            g.append(text(t, 68 + 7.6*len(name) + 26, y - 2, "BOT", 10, "tealsoftink", "middle", 700, spacing=0.8))
-            g.append(text(t, 68 + 7.6*len(name) + 52, y - 2, time, 12, "dim"))
-            g.append(f'<rect x="68" y="{y+8}" width="700" height="40" rx="10" fill="{t["bg"]}" stroke="{t["line"]}"/>')
-            g.append(f'<rect x="68" y="{y+8}" width="3" height="40" rx="1.5" fill="{t["teal"]}"/>')
-            g.append(f'<circle cx="88" cy="{y+28}" r="4" fill="#2E7D4F"/>')
-            g.append(text(t, 100, y + 33, body, 14, "text", weight=500))
-            step = 70
+        kt = f'0;{t0/cycle:.3f};{(t0+0.4)/cycle:.3f};0.93;1'
+        g = [f'<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="{kt}" dur="{cycle}s" repeatCount="indefinite"/>',
+             f'<animateTransform attributeName="transform" type="translate" values="0 8;0 8;0 0;0 0;0 0" keyTimes="{kt}" dur="{cycle}s" repeatCount="indefinite"/>']
+        if r["kind"] == "own":
+            x = W - 32 - r["w"]
+            g.append(text(t, W - 40, y + 4, r["time"], 11.5, "dim", "end", 600))
+            w, top, h = r["w"], y + 10, 44
+            g.append(f'<path d="M{x+20} {top}H{x+w-20}A20 20 0 0 1 {x+w} {top+20}V{top+h-6}A6 6 0 0 1 {x+w-6} {top+h}H{x+20}A20 20 0 0 1 {x} {top+h-20}V{top+20}A20 20 0 0 1 {x+20} {top}Z" fill="url(#{grad_id})"/>')
+            g.append(text(t, x + 18, y + 35, r["body"], 15, "#06201c", weight=600))
+            last_own_y = y + 50
+            step = 62
         else:
-            g.append(f'<rect x="24" y="{y-20}" width="30" height="30" rx="9" fill="{bg}"/>')
-            g.append(text(t, 39, y, ini, 12, fg, "middle", 600))
-            g.append(text(t, 68, y - 2, name, 14, "text", weight=600))
-            g.append(text(t, 68 + 7.6*len(name) + 10, y - 2, time, 12, "dim"))
-            g.append(text(t, 68, y + 22, body, 15, "text"))
-            step = 56
+            bot = r["kind"] == "bot"
+            # avatar
+            if bot:
+                g.append(f'<circle cx="49" cy="{y+40}" r="17" fill="{t["tealsoft"]}"/>')
+                g.append(f'<g transform="translate(40 {y+31}) scale(0.75)" fill="none" stroke="{t["tealsoftink"]}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 4v4"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></g>')
+            else:
+                g.append(f'<circle cx="49" cy="{y+40}" r="17" fill="{r["bg"]}"/>' + text(t, 49, y + 45, r["ini"], 12, r["fg"], "middle", 800))
+            nx = 78
+            g.append(text(t, nx, y + 4, r["name"], 13, "text", weight=700))
+            nw = len(r["name"]) * 7.4 + 10
+            if bot:
+                g.append(f'<rect x="{nx+nw}" y="{y-8}" width="34" height="16" rx="5" fill="{t["tealsoft"]}"/>' + text(t, nx + nw + 17, y + 4, "BOT", 9.5, "tealsoftink", "middle", 800, spacing=0.6))
+                nw += 42
+            g.append(text(t, nx + nw, y + 4, r["time"], 11.5, "dim", weight=600))
+            w, top, h = r["w"], y + 10, 44
+            g.append(f'<path d="M{nx+6} {top}H{nx+w-20}A20 20 0 0 1 {nx+w} {top+20}V{top+h-20}A20 20 0 0 1 {nx+w-20} {top+h}H{nx+20}A20 20 0 0 1 {nx} {top+h-20}V{top+6}A6 6 0 0 1 {nx+6} {top}Z" fill="{t["soft"]}"/>')
+            g.append(text(t, nx + 16, y + 35, r["body"], 15, "text"))
+            step = 70
         g.append("</g>")
         p.extend(g)
         y += step
-    # read receipt under the last message, late in the cycle
+    # read receipt (avatar stack) under the last own message, late in the cycle
+    sx = W - 40
     p.append(f'<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.80;0.84;0.93;1" dur="{cycle}s" repeatCount="indefinite"/>'
-             f'<path d="M70 {y-2} l4 4 8-8" fill="none" stroke="{t["dim"]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
-             + text(t, 88, y + 2, "อ่านแล้ว 3 จาก 3", 12, "dim") + "</g>")
-    # composer
-    p.append(f'<rect x="24" y="{H-64}" width="{W-48}" height="44" rx="12" fill="{t["card"]}" stroke="{t["line"]}"/>')
-    p.append(text(t, 42, H - 37, "ส่งข้อความถึง ทีมพัฒนา", 14, "dim"))
-    p.append(f'<rect x="{W-24-40}" y="{H-60}" width="36" height="36" rx="9" fill="{t["teal"]}"/>')
-    p.append(f'<path d="M{W-24-40+11} {H-42} h14 m-5 -5 l5 5 -5 5" fill="none" stroke="{t["tealink"]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>')
+             + text(t, sx - 54, last_own_y + 10, "อ่านแล้ว", 11.5, "dim", "end", 600)
+             + f'<circle cx="{sx-38}" cy="{last_own_y+6}" r="9" fill="#fce7f3" stroke="{t["card"]}" stroke-width="2"/>' + text(t, sx - 38, last_own_y + 9.5, "ณ", 8, "#9d174d", "middle", 800)
+             + f'<circle cx="{sx-24}" cy="{last_own_y+6}" r="9" fill="#dcfce7" stroke="{t["card"]}" stroke-width="2"/>' + text(t, sx - 24, last_own_y + 9.5, "ส", 8, "#14532d", "middle", 800)
+             + "</g>")
+    # floating composer
+    p.append(f'<rect x="24" y="{H-70}" width="{W-48}" height="50" rx="16" fill="{t["bg"]}" stroke="{t["line"]}"/>')
+    p.append(text(t, 44, H - 40, "ส่งข้อความถึง ทีมพัฒนา", 14, "dim", weight=500))
+    p.append(f'<rect x="{W-24-46}" y="{H-65}" width="40" height="40" rx="13" fill="url(#{grad_id})"/>')
+    p.append(f'<path d="M{W-24-46+12} {H-45} h16 m-6 -6 l6 6 -6 6" fill="none" stroke="#06201c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>')
     p.append("</svg>\n")
     return "\n".join(p)
 
