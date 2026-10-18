@@ -10,16 +10,16 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
-// Integration tests run against a real PostgreSQL when NUNTIO_TEST_DATABASE_URL
+// Integration tests run against a real PostgreSQL when MESSARIO_TEST_DATABASE_URL
 // is set (make test). Each run uses its own schema and drops it afterwards.
 func testDB(t *testing.T) *DB {
 	t.Helper()
-	url := os.Getenv("NUNTIO_TEST_DATABASE_URL")
+	url := os.Getenv("MESSARIO_TEST_DATABASE_URL")
 	if url == "" {
-		t.Skip("NUNTIO_TEST_DATABASE_URL not set")
+		t.Skip("MESSARIO_TEST_DATABASE_URL not set")
 	}
 	ctx := context.Background()
 	schema := fmt.Sprintf("t_%d", time.Now().UnixNano())

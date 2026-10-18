@@ -1,7 +1,9 @@
 <p align="center">
-  <img src="site/favicon.svg" width="72" height="72" alt="">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/messario-wordmark-dark.svg">
+    <img src="brand/messario-wordmark.svg" width="300" height="80" alt="Messario">
+  </picture>
 </p>
-<h1 align="center">Nuntio</h1>
 <p align="center">
   Self-hosted team chat for organizations.<br>
   One Go binary, one PostgreSQL, a Telegram-style bot API. Your data stays on your servers.
@@ -11,7 +13,7 @@
   <a href="#deploy-for-a-customer">Deploy</a> ·
   <a href="#bots">Bots</a> ·
   <a href="docs/reference.md">Reference</a> ·
-  <a href="https://b1ll1eee.github.io/nuntio-message/">Website (ไทย)</a>
+  <a href="https://b1ll1eee.github.io/messario/">Website (ไทย)</a>
 </p>
 
 <table>
@@ -37,7 +39,7 @@
 
 LINE and Telegram keep your company's conversations on someone else's
 servers and give you no admin. Teams, Mattermost and Rocket.Chat solve that
-but are heavy to run. Nuntio is the small option: install it on one machine,
+but are heavy to run. Messario is the small option: install it on one machine,
 add your people, point your internal systems at the bot API.
 
 | You get | Who it is for |
@@ -53,7 +55,7 @@ add your people, point your internal systems at the bot API.
 ## Quick start
 
 ```sh
-git clone https://github.com/b1ll1eee/nuntio-message && cd nuntio-message
+git clone https://github.com/b1ll1eee/messario && cd messario
 make db-up            # PostgreSQL 17 in Docker
 make init ORG="My Company" ADMIN=admin PASSWORD='change-me-now'
 make web              # build the Vue client into the binary
@@ -69,19 +71,19 @@ PASSWORD='change-me-now' scripts/demo.sh
 
 ## Deploy for a customer
 
-One Compose file brings up Nuntio, PostgreSQL and Caddy, which obtains the
+One Compose file brings up Messario, PostgreSQL and Caddy, which obtains the
 TLS certificate for your domain by itself.
 
 ```sh
 cd deploy
-cp .env.example .env    # NUNTIO_DOMAIN, POSTGRES_PASSWORD, NUNTIO_LICENSE
+cp .env.example .env    # MESSARIO_DOMAIN, POSTGRES_PASSWORD, MESSARIO_LICENSE
 docker compose up -d
-docker compose exec nuntio /app/nuntio init \
+docker compose exec messario /app/messario init \
   --org "My Company" --admin admin --password 'change-me'
 ```
 
 Update with `docker compose pull && docker compose up -d`; migrations run on
-start. Back up the `postgres-data` and `nuntio-data` volumes. A 2 vCPU / 4 GB
+start. Back up the `postgres-data` and `messario-data` volumes. A 2 vCPU / 4 GB
 machine serves several hundred people.
 
 ## Bots
@@ -114,11 +116,11 @@ go run ./cmd/licensegen issue -key <private> -org "ACME" -seats 100 -days 365
 ## Everyday commands
 
 ```sh
-make build      # bin/nuntio with the version stamped in
+make build      # bin/messario with the version stamped in
 make web-dev    # Vite dev server on :5173, proxied to the API on :8080
 make test       # unit tests + PostgreSQL integration tests
 make vet
-docker build -t nuntio .
+docker build -t messario .
 ```
 
 <details>

@@ -3,8 +3,8 @@ package httpapi
 import (
 	"net/http"
 
-	"github.com/b1ll1eee/nuntio-message/internal/app"
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/app"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // ---- auth ----

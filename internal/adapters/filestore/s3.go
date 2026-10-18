@@ -9,7 +9,7 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // S3Config points at any S3-compatible service: AWS S3, MinIO, Cloudflare R2.

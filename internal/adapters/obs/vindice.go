@@ -1,4 +1,4 @@
-// Package obs wires Nuntio to Vindice (the team's observability platform)
+// Package obs wires Messario to Vindice (the team's observability platform)
 // through its OpenTelemetry SDK: traces for every HTTP request, request
 // metrics, and logs linked to traces. It is optional: with no endpoint
 // configured the service logs to stdout only.

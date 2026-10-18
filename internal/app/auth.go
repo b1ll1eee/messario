@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // Login checks credentials and opens a session. The returned token goes into

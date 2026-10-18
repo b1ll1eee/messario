@@ -1,29 +1,29 @@
-# Customer deployment: Nuntio + PostgreSQL + Caddy (automatic HTTPS).
+# Customer deployment: Messario + PostgreSQL + Caddy (automatic HTTPS).
 #
-#   cp .env.example .env   # set NUNTIO_DOMAIN, POSTGRES_PASSWORD, NUNTIO_LICENSE
+#   cp .env.example .env   # set MESSARIO_DOMAIN, POSTGRES_PASSWORD, MESSARIO_LICENSE
 #   docker compose up -d
-#   docker compose exec nuntio /app/nuntio init --org "My Company" --admin admin --password 'change-me'
+#   docker compose exec messario /app/messario init --org "My Company" --admin admin --password 'change-me'
 #
 # Update: docker compose pull && docker compose up -d   (migrations run on start)
 
 services:
-  nuntio:
-    image: ${NUNTIO_IMAGE:-ghcr.io/b1ll1eee/nuntio:latest}
+  messario:
+    image: ${MESSARIO_IMAGE:-ghcr.io/b1ll1eee/messario:latest}
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      NUNTIO_DATABASE_URL: postgres://nuntio:${POSTGRES_PASSWORD}@postgres:5432/nuntio?sslmode=disable
-      NUNTIO_PUBLIC_URL: https://${NUNTIO_DOMAIN}
-      NUNTIO_COOKIE_SECURE: "true"
-      NUNTIO_LICENSE: ${NUNTIO_LICENSE:-}
-      NUNTIO_ENVIRONMENT: ${NUNTIO_ENVIRONMENT:-production}
-      NUNTIO_VINDICE_ENDPOINT: ${NUNTIO_VINDICE_ENDPOINT:-}
-      NUNTIO_VINDICE_API_KEY: ${NUNTIO_VINDICE_API_KEY:-}
-      NUNTIO_MAX_FILE_MB: ${NUNTIO_MAX_FILE_MB:-25}
+      MESSARIO_DATABASE_URL: postgres://messario:${POSTGRES_PASSWORD}@postgres:5432/messario?sslmode=disable
+      MESSARIO_PUBLIC_URL: https://${MESSARIO_DOMAIN}
+      MESSARIO_COOKIE_SECURE: "true"
+      MESSARIO_LICENSE: ${MESSARIO_LICENSE:-}
+      MESSARIO_ENVIRONMENT: ${MESSARIO_ENVIRONMENT:-production}
+      MESSARIO_VINDICE_ENDPOINT: ${MESSARIO_VINDICE_ENDPOINT:-}
+      MESSARIO_VINDICE_API_KEY: ${MESSARIO_VINDICE_API_KEY:-}
+      MESSARIO_MAX_FILE_MB: ${MESSARIO_MAX_FILE_MB:-25}
     volumes:
-      - nuntio-data:/app/data
+      - messario-data:/app/data
     expose:
       - "8080"
 
@@ -31,13 +31,13 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: nuntio
+      POSTGRES_USER: messario
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: nuntio
+      POSTGRES_DB: messario
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nuntio"]
+      test: ["CMD-SHELL", "pg_isready -U messario"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -46,9 +46,9 @@ services:
     image: caddy:2-alpine
     restart: unless-stopped
     depends_on:
-      - nuntio
+      - messario
     environment:
-      NUNTIO_DOMAIN: ${NUNTIO_DOMAIN}
+      MESSARIO_DOMAIN: ${MESSARIO_DOMAIN}
     ports:
       - "80:80"
       - "443:443"
@@ -59,7 +59,7 @@ services:
       - caddy-config:/config
 
 volumes:
-  nuntio-data:
+  messario-data:
   postgres-data:
   caddy-data:
   caddy-config:

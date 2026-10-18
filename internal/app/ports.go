@@ -7,7 +7,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // OrgRepo stores the installation's organization.

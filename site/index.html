@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nuntio — แชทองค์กรติดตั้งในเซิร์ฟเวอร์ของคุณเอง</title>
-<meta name="description" content="Nuntio คือระบบแชทสำหรับองค์กรแบบ self-hosted เบาเท่าไฟล์เดียว ต่อระบบงานได้ด้วย Bot API แบบ Telegram และข้อมูลไม่ออกจากบริษัท รองรับ PDPA">
-<link rel="canonical" href="https://b1ll1eee.github.io/nuntio-message/">
-<link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/nuntio-message/">
-<link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/nuntio-message/en/">
-<link rel="alternate" hreflang="x-default" href="https://b1ll1eee.github.io/nuntio-message/">
+<title>Messario — แชทองค์กรติดตั้งในเซิร์ฟเวอร์ของคุณเอง</title>
+<meta name="description" content="Messario คือระบบแชทสำหรับองค์กรแบบ self-hosted เบาเท่าไฟล์เดียว ต่อระบบงานได้ด้วย Bot API แบบ Telegram และข้อมูลไม่ออกจากบริษัท รองรับ PDPA">
+<link rel="canonical" href="https://b1ll1eee.github.io/messario/">
+<link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/messario/">
+<link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/messario/en/">
+<link rel="alternate" hreflang="x-default" href="https://b1ll1eee.github.io/messario/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Nuntio — แชทองค์กรติดตั้งในเซิร์ฟเวอร์ของคุณเอง">
+<meta property="og:title" content="Messario — แชทองค์กรติดตั้งในเซิร์ฟเวอร์ของคุณเอง">
 <meta property="og:description" content="เบาเท่าไฟล์เดียว ต่อระบบงานได้เหมือน Telegram bot ข้อมูลไม่ออกจากบริษัท">
-<meta property="og:url" content="https://b1ll1eee.github.io/nuntio-message/">
-<meta property="og:image" content="https://b1ll1eee.github.io/nuntio-message/assets/desktop.png">
+<meta property="og:url" content="https://b1ll1eee.github.io/messario/">
+<meta property="og:image" content="https://b1ll1eee.github.io/messario/assets/og.png">
 <meta property="og:locale" content="th_TH">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -22,9 +22,9 @@
 <link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
- {"@type":"SoftwareApplication","name":"Nuntio","applicationCategory":"BusinessApplication","operatingSystem":"Linux, Docker","description":"ระบบแชทสำหรับองค์กรแบบ self-hosted พร้อม Bot API","url":"https://b1ll1eee.github.io/nuntio-message/","softwareHelp":"https://github.com/b1ll1eee/nuntio-message","offers":{"@type":"Offer","price":"0","priceCurrency":"THB","description":"Community edition ฟรี 10 ที่นั่ง"}},
+ {"@type":"SoftwareApplication","name":"Messario","applicationCategory":"BusinessApplication","operatingSystem":"Linux, Docker","description":"ระบบแชทสำหรับองค์กรแบบ self-hosted พร้อม Bot API","url":"https://b1ll1eee.github.io/messario/","softwareHelp":"https://github.com/b1ll1eee/messario","offers":{"@type":"Offer","price":"0","priceCurrency":"THB","description":"Community edition ฟรี 10 ที่นั่ง"}},
  {"@type":"FAQPage","mainEntity":[
-  {"@type":"Question","name":"ต่างจาก LINE อย่างไร","acceptedAnswer":{"@type":"Answer","text":"LINE เป็นแอปส่วนตัวที่ข้อมูลอยู่กับ LINE และบริษัทจัดการสมาชิกไม่ได้ Nuntio ติดตั้งในบริษัท ผู้ดูแลเพิ่มและลบคนได้ทันที และมี audit log"}},
+  {"@type":"Question","name":"ต่างจาก LINE อย่างไร","acceptedAnswer":{"@type":"Answer","text":"LINE เป็นแอปส่วนตัวที่ข้อมูลอยู่กับ LINE และบริษัทจัดการสมาชิกไม่ได้ Messario ติดตั้งในบริษัท ผู้ดูแลเพิ่มและลบคนได้ทันที และมี audit log"}},
   {"@type":"Question","name":"ต้องมีทีม IT ขนาดไหน","acceptedAnswer":{"@type":"Answer","text":"คนเดียวที่เคยใช้ Docker ก็ติดตั้งได้ การอัปเดตใช้คำสั่งเดียว"}},
   {"@type":"Question","name":"มีแอปมือถือไหม","acceptedAnswer":{"@type":"Answer","text":"ใช้ผ่านเว็บบนมือถือได้เต็มรูปแบบ และติดตั้งเป็นแอปบนหน้าจอหลักได้"}},
   {"@type":"Question","name":"ถ้าเลิกใช้ ข้อมูลเป็นของใคร","acceptedAnswer":{"@type":"Answer","text":"ของคุณทั้งหมด ข้อมูลอยู่ในฐานข้อมูลของคุณเอง และ export ได้ทุกเมื่อ"}}
@@ -35,27 +35,27 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <a class="brand" href="./"><span class="logo" aria-hidden="true">N</span>Nuntio</a>
+    <a class="brand" href="./"><img class="logo" src="favicon.svg" width="30" height="30" alt="">Messario</a>
     <nav class="menu" aria-label="เมนูหลัก">
       <a href="#features">ฟีเจอร์</a><a href="#bot">Bot API</a><a href="#selfhost">ติดตั้งเอง</a><a href="#pricing">ราคา</a><a href="#faq">คำถามที่พบบ่อย</a>
     </nav>
     <span class="grow"></span>
     <a class="btn" href="en/" lang="en" hreflang="en">English</a>
-    <a class="btn dark" href="https://github.com/b1ll1eee/nuntio-message">GitHub</a>
+    <a class="btn dark" href="https://github.com/b1ll1eee/messario">GitHub</a>
   </header>
 
   <section class="hero">
     <span class="eyebrow">แชทองค์กรแบบติดตั้งในบ้านตัวเอง</span>
     <h1>แชทของบริษัทคุณ บนเครื่องของบริษัทคุณ</h1>
-    <p class="lede">Nuntio คือระบบแชทสำหรับองค์กรที่ติดตั้งบนเซิร์ฟเวอร์ของคุณเอง เบาเท่าไฟล์เดียว ต่อระบบงานได้ด้วย Bot API แบบเดียวกับ Telegram และข้อมูลไม่ออกจากบริษัท</p>
+    <p class="lede">Messario คือระบบแชทสำหรับองค์กรที่ติดตั้งบนเซิร์ฟเวอร์ของคุณเอง เบาเท่าไฟล์เดียว ต่อระบบงานได้ด้วย Bot API แบบเดียวกับ Telegram และข้อมูลไม่ออกจากบริษัท</p>
     <div class="row">
       <a class="btn primary" href="#selfhost">ติดตั้งใน 15 นาที</a>
-      <a class="btn" href="https://github.com/b1ll1eee/nuntio-message#readme">อ่านเอกสาร</a>
+      <a class="btn" href="https://github.com/b1ll1eee/messario#readme">อ่านเอกสาร</a>
     </div>
     <div class="checks"><span>รองรับ PDPA</span><span>Community edition ฟรี 10 ที่นั่ง</span><span>ภาษาไทยเป็นภาษาหลัก</span></div>
   </section>
 
-  <figure class="shot"><img src="assets/desktop.png" alt="หน้าจอ Nuntio บนเดสก์ท็อป: รายการแชท ห้องสนทนาของทีมพัฒนา และการ์ดจาก Deploy Bot" width="1440" height="900" loading="eager"></figure>
+  <figure class="shot"><img src="assets/desktop.png" alt="หน้าจอ Messario บนเดสก์ท็อป: รายการแชท ห้องสนทนาของทีมพัฒนา และการ์ดจาก Deploy Bot" width="1440" height="900" loading="eager"></figure>
 </div>
 
 <section class="band" id="features"><div class="wrap">
@@ -93,13 +93,13 @@
   <h2>ติดตั้งเสร็จใน 15 นาที อัปเดตด้วยคำสั่งเดียว</h2>
   <div class="steps">
     <div><div class="n">01</div><h3>เตรียมเครื่อง</h3><p>Linux เครื่องเดียว 2 vCPU 4 GB ก็เพียงพอสำหรับพนักงานหลายร้อยคน จะเป็นเซิร์ฟเวอร์ในบริษัทหรือ VPS ก็ได้</p></div>
-    <div><div class="n">02</div><h3>รัน Docker Compose</h3><p>ไฟล์เดียวรวม Nuntio, PostgreSQL และ Caddy ที่ออกใบรับรอง HTTPS ให้อัตโนมัติ ใส่โดเมนกับ license key แล้วรันได้ทันที</p></div>
+    <div><div class="n">02</div><h3>รัน Docker Compose</h3><p>ไฟล์เดียวรวม Messario, PostgreSQL และ Caddy ที่ออกใบรับรอง HTTPS ให้อัตโนมัติ ใส่โดเมนกับ license key แล้วรันได้ทันที</p></div>
     <div><div class="n">03</div><h3>เชิญพนักงาน</h3><p>กำหนดโดเมนอีเมลของบริษัท เพิ่มผู้ใช้จากหน้าผู้ดูแล ใช้งานได้ทั้งบนเว็บและมือถือ</p></div>
   </div>
-  <pre style="margin-top:36px"><span class="k">git</span> clone https://github.com/b1ll1eee/nuntio-message &amp;&amp; <span class="k">cd</span> nuntio-message/deploy
-<span class="k">cp</span> .env.example .env   <span class="c"># ตั้ง NUNTIO_DOMAIN, POSTGRES_PASSWORD, NUNTIO_LICENSE</span>
+  <pre style="margin-top:36px"><span class="k">git</span> clone https://github.com/b1ll1eee/messario &amp;&amp; <span class="k">cd</span> messario/deploy
+<span class="k">cp</span> .env.example .env   <span class="c"># ตั้ง MESSARIO_DOMAIN, POSTGRES_PASSWORD, MESSARIO_LICENSE</span>
 <span class="k">docker</span> compose up -d
-<span class="k">docker</span> compose exec nuntio /app/nuntio init --org <span class="s">"บริษัทของคุณ"</span> --admin admin --password <span class="s">'...'</span></pre>
+<span class="k">docker</span> compose exec messario /app/messario init --org <span class="s">"บริษัทของคุณ"</span> --admin admin --password <span class="s">'...'</span></pre>
 </div></section>
 
 <section id="pricing"><div class="wrap">
@@ -107,16 +107,16 @@
   <h2>จ่ายครั้งเดียว ไม่มีค่ารายเดือนต่อหัว</h2>
   <p class="sub">License ตลอดอายุการใช้งาน ตรวจสอบแบบออฟไลน์ ไม่โทรกลับบ้าน พร้อม support และอัปเดตรายปี</p>
   <div class="plans">
-    <article class="plan"><h3>Community</h3><div class="price">ฟรี</div><div class="muted">สูงสุด 10 คน</div><ul><li>แชท กลุ่ม และช่องประกาศ</li><li>บอทไม่จำกัด</li><li>ส่งไฟล์และรูป</li><li>โค้ดเปิด ติดตั้งเองได้</li></ul><a class="btn" href="https://github.com/b1ll1eee/nuntio-message">ดาวน์โหลด</a></article>
-    <article class="plan hi"><div class="row" style="justify-content:space-between;align-items:center"><h3>Business</h3><span class="tag">แนะนำ</span></div><div class="price">[ราคา]</div><div class="muted">สูงสุด 300 คน</div><ul><li>ทุกอย่างใน Community</li><li>Audit log และ export</li><li>support ในเวลาทำการ</li><li>อัปเดต 1 ปี</li></ul><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20Business">ขอใบเสนอราคา</a></article>
-    <article class="plan"><h3>Enterprise</h3><div class="price">ติดต่อเรา</div><div class="muted">ไม่จำกัดจำนวนคน</div><ul><li>ทุกอย่างใน Business</li><li>ติดตั้งและย้ายข้อมูลให้</li><li>SLA และ support 24/7</li></ul><a class="btn" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20Enterprise">คุยกับเรา</a></article>
+    <article class="plan"><h3>Community</h3><div class="price">ฟรี</div><div class="muted">สูงสุด 10 คน</div><ul><li>แชท กลุ่ม และช่องประกาศ</li><li>บอทไม่จำกัด</li><li>ส่งไฟล์และรูป</li><li>โค้ดเปิด ติดตั้งเองได้</li></ul><a class="btn" href="https://github.com/b1ll1eee/messario">ดาวน์โหลด</a></article>
+    <article class="plan hi"><div class="row" style="justify-content:space-between;align-items:center"><h3>Business</h3><span class="tag">แนะนำ</span></div><div class="price">[ราคา]</div><div class="muted">สูงสุด 300 คน</div><ul><li>ทุกอย่างใน Community</li><li>Audit log และ export</li><li>support ในเวลาทำการ</li><li>อัปเดต 1 ปี</li></ul><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Messario%20Business">ขอใบเสนอราคา</a></article>
+    <article class="plan"><h3>Enterprise</h3><div class="price">ติดต่อเรา</div><div class="muted">ไม่จำกัดจำนวนคน</div><ul><li>ทุกอย่างใน Business</li><li>ติดตั้งและย้ายข้อมูลให้</li><li>SLA และ support 24/7</li></ul><a class="btn" href="mailto:krirk.klomkliang@gmail.com?subject=Messario%20Enterprise">คุยกับเรา</a></article>
   </div>
 </div></section>
 
 <section class="band" id="faq"><div class="wrap faq">
   <div><h2>คำถามที่พบบ่อย</h2></div>
   <div>
-    <details><summary>ต่างจาก LINE อย่างไร</summary><p>LINE เป็นแอปส่วนตัวที่ข้อมูลอยู่กับ LINE และบริษัทจัดการสมาชิกไม่ได้ Nuntio ติดตั้งในบริษัท ผู้ดูแลเพิ่มและลบคนได้ทันที และมี audit log</p></details>
+    <details><summary>ต่างจาก LINE อย่างไร</summary><p>LINE เป็นแอปส่วนตัวที่ข้อมูลอยู่กับ LINE และบริษัทจัดการสมาชิกไม่ได้ Messario ติดตั้งในบริษัท ผู้ดูแลเพิ่มและลบคนได้ทันที และมี audit log</p></details>
     <details><summary>ต้องมีทีม IT ขนาดไหน</summary><p>คนเดียวที่เคยใช้ Docker ก็ติดตั้งได้ การอัปเดตใช้คำสั่งเดียว</p></details>
     <details><summary>มีแอปมือถือไหม</summary><p>ใช้ผ่านเว็บบนมือถือได้เต็มรูปแบบ และติดตั้งเป็นแอปบนหน้าจอหลักได้</p></details>
     <details><summary>ถ้าเลิกใช้ ข้อมูลเป็นของใคร</summary><p>ของคุณทั้งหมด ข้อมูลอยู่ในฐานข้อมูลของคุณเอง และ export ได้ทุกเมื่อ</p></details>
@@ -124,15 +124,15 @@
 </div></section>
 
 <section><div class="wrap">
-  <div class="cta"><div><h2>อยากเห็นของจริงก่อนตัดสินใจ</h2><p>ติดตั้ง Community edition ได้ฟรี หรือนัดดูเดโม 30 นาที</p></div><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20demo">นัดดูเดโม</a></div>
+  <div class="cta"><div><h2>อยากเห็นของจริงก่อนตัดสินใจ</h2><p>ติดตั้ง Community edition ได้ฟรี หรือนัดดูเดโม 30 นาที</p></div><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Messario%20demo">นัดดูเดโม</a></div>
 </div></section>
 
 <footer><div class="wrap">
-  <span class="brand"><span class="logo" aria-hidden="true">N</span>Nuntio</span>
+  <span class="brand"><img class="logo" src="favicon.svg" width="30" height="30" alt="">Messario</span>
   <span class="grow"></span>
-  <a href="https://github.com/b1ll1eee/nuntio-message#readme">เอกสาร</a>
-  <a href="https://github.com/b1ll1eee/nuntio-message/blob/main/docs/reference.md#bot-api">Bot API</a>
-  <a href="https://github.com/b1ll1eee/nuntio-message">GitHub</a>
+  <a href="https://github.com/b1ll1eee/messario#readme">เอกสาร</a>
+  <a href="https://github.com/b1ll1eee/messario/blob/main/docs/reference.md#bot-api">Bot API</a>
+  <a href="https://github.com/b1ll1eee/messario">GitHub</a>
   <a href="en/" lang="en">English</a>
 </div></footer>
 </body>

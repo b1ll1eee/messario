@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/b1ll1eee/nuntio-message/internal/app"
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/app"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // uploadFile handles multipart POST /api/chats/{id}/files with field "file"

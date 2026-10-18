@@ -1,6 +1,6 @@
 /** UI copy in one place so wording changes don't touch components. */
 export const t = {
-  appName: 'Nuntio',
+  appName: 'Messario',
   login: { title: 'เข้าสู่ระบบ', username: 'ชื่อผู้ใช้', password: 'รหัสผ่าน', submit: 'เข้าสู่ระบบ', failed: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', suspended: 'บัญชีนี้ถูกระงับ' },
   nav: { chats: 'แชท', channels: 'ช่องประกาศ', admin: 'ผู้ดูแล', logout: 'ออกจากระบบ', theme: 'สลับธีม' },
   list: { title: 'ข้อความ', search: 'ค้นหาคน ห้อง หรือข้อความ', newChat: 'สร้างแชทใหม่', pinned: 'ปักหมุด', recent: 'ล่าสุด', empty: 'ยังไม่มีแชท กดปุ่ม + เพื่อเริ่ม', you: 'คุณ', now: 'ตอนนี้', yesterday: 'เมื่อวาน' },

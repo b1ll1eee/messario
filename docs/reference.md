@@ -1,4 +1,4 @@
-# Nuntio reference
+# Messario reference
 
 Everything that is not needed on the first read of the README: configuration,
 the full API, architecture, operations.
@@ -10,37 +10,37 @@ Every setting is an environment variable with a default
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `NUNTIO_ADDR` | `:8080` | HTTP listen address |
-| `NUNTIO_DATABASE_URL` | `postgres://nuntio:nuntio@localhost:5432/nuntio?sslmode=disable` | PostgreSQL |
-| `NUNTIO_PUBLIC_URL` | `http://localhost:8080` | External URL; its origin is allowed on mutating requests and WebSocket upgrades |
-| `NUNTIO_ALLOWED_ORIGINS` | empty | Extra origins, comma-separated |
-| `NUNTIO_COOKIE_SECURE` | `true` | Set `false` only for plain-HTTP local development |
-| `NUNTIO_SESSION_TTL` | `720h` | Login lifetime |
-| `NUNTIO_LOG_LEVEL` | `info` | `debug` / `info` / `warn` / `error` |
-| `NUNTIO_MAX_GROUP_MEMBERS` | `200` | Cap per group |
-| `NUNTIO_MAX_CHANNEL_MEMBERS` | `5000` | Cap per channel |
-| `NUNTIO_MAX_BODY_BYTES` | `8000` | Longest message |
-| `NUNTIO_MAX_FILE_MB` | `25` | Largest upload |
-| `NUNTIO_FILES_DIR` | `./data/files` | Local file storage (used when no S3 endpoint) |
-| `NUNTIO_S3_ENDPOINT` / `_ACCESS_KEY` / `_SECRET_KEY` / `_BUCKET` / `_REGION` / `_SSL` | empty / … / `nuntio` / `us-east-1` / `true` | Any S3-compatible store (MinIO, R2, S3) |
-| `NUNTIO_BOT_RATE_PER_SECOND` / `NUNTIO_BOT_BURST` | `30` / `30` | Per-bot send limit |
-| `NUNTIO_BOT_LONGPOLL_TIMEOUT` | `25s` | Max wait in `getUpdates` |
-| `NUNTIO_WEBHOOK_TIMEOUT` / `_ATTEMPTS` / `_BACKOFF` / `_CONCURRENCY` | `10s` / `3` / `2s` / `16` | Webhook delivery |
-| `NUNTIO_LICENSE` | empty | Customer license key; empty = community edition |
-| `NUNTIO_LICENSE_PUBLIC_KEY` | compiled in | Override the vendor public key |
-| `NUNTIO_FREE_SEATS` | `10` | Seats without a key |
-| `NUNTIO_VINDICE_ENDPOINT` / `NUNTIO_VINDICE_API_KEY` | empty | Send traces, metrics and logs to [Vindice](https://github.com/b1ll1eee/vindice-observability) |
-| `NUNTIO_ENVIRONMENT` | `production` | Tag on telemetry |
+| `MESSARIO_ADDR` | `:8080` | HTTP listen address |
+| `MESSARIO_DATABASE_URL` | `postgres://messario:messario@localhost:5432/messario?sslmode=disable` | PostgreSQL |
+| `MESSARIO_PUBLIC_URL` | `http://localhost:8080` | External URL; its origin is allowed on mutating requests and WebSocket upgrades |
+| `MESSARIO_ALLOWED_ORIGINS` | empty | Extra origins, comma-separated |
+| `MESSARIO_COOKIE_SECURE` | `true` | Set `false` only for plain-HTTP local development |
+| `MESSARIO_SESSION_TTL` | `720h` | Login lifetime |
+| `MESSARIO_LOG_LEVEL` | `info` | `debug` / `info` / `warn` / `error` |
+| `MESSARIO_MAX_GROUP_MEMBERS` | `200` | Cap per group |
+| `MESSARIO_MAX_CHANNEL_MEMBERS` | `5000` | Cap per channel |
+| `MESSARIO_MAX_BODY_BYTES` | `8000` | Longest message |
+| `MESSARIO_MAX_FILE_MB` | `25` | Largest upload |
+| `MESSARIO_FILES_DIR` | `./data/files` | Local file storage (used when no S3 endpoint) |
+| `MESSARIO_S3_ENDPOINT` / `_ACCESS_KEY` / `_SECRET_KEY` / `_BUCKET` / `_REGION` / `_SSL` | empty / … / `messario` / `us-east-1` / `true` | Any S3-compatible store (MinIO, R2, S3) |
+| `MESSARIO_BOT_RATE_PER_SECOND` / `MESSARIO_BOT_BURST` | `30` / `30` | Per-bot send limit |
+| `MESSARIO_BOT_LONGPOLL_TIMEOUT` | `25s` | Max wait in `getUpdates` |
+| `MESSARIO_WEBHOOK_TIMEOUT` / `_ATTEMPTS` / `_BACKOFF` / `_CONCURRENCY` | `10s` / `3` / `2s` / `16` | Webhook delivery |
+| `MESSARIO_LICENSE` | empty | Customer license key; empty = community edition |
+| `MESSARIO_LICENSE_PUBLIC_KEY` | compiled in | Override the vendor public key |
+| `MESSARIO_FREE_SEATS` | `10` | Seats without a key |
+| `MESSARIO_VINDICE_ENDPOINT` / `MESSARIO_VINDICE_API_KEY` | empty | Send traces, metrics and logs to [Vindice](https://github.com/b1ll1eee/vindice-observability) |
+| `MESSARIO_ENVIRONMENT` | `production` | Tag on telemetry |
 
-WebSocket tuning: `NUNTIO_WS_WRITE_TIMEOUT` (10s), `NUNTIO_WS_PING_INTERVAL`
-(25s), `NUNTIO_WS_PONG_TIMEOUT` (10s), `NUNTIO_WS_SEND_BUFFER` (64 events).
+WebSocket tuning: `MESSARIO_WS_WRITE_TIMEOUT` (10s), `MESSARIO_WS_PING_INTERVAL`
+(25s), `MESSARIO_WS_PONG_TIMEOUT` (10s), `MESSARIO_WS_SEND_BUFFER` (64 events).
 
 ## Commands
 
 ```
-nuntio serve                    run the server (default)
-nuntio migrate                  apply migrations and exit
-nuntio init --org "Name" --admin admin --password '...' [--domain example.com]
+messario serve                    run the server (default)
+messario migrate                  apply migrations and exit
+messario init --org "Name" --admin admin --password '...' [--domain example.com]
 licensegen keygen               vendor: create the signing key pair
 licensegen issue -key K -org "Customer" -seats 50 -days 365
 ```
@@ -56,7 +56,7 @@ All `/api` routes need the session cookie set by login. Errors are
 
 | Route | Body / query | Notes |
 |---|---|---|
-| `POST /api/auth/login` | `{username, password}` | Sets `nuntio_session` cookie |
+| `POST /api/auth/login` | `{username, password}` | Sets `messario_session` cookie |
 | `POST /api/auth/logout` | | |
 | `GET /api/me` | | |
 | `POST /api/me/password` | `{current, next}` | |
@@ -132,7 +132,7 @@ GET  /bot/<token>/getWebhookInfo
 A bot only sees chats it was added to. `getUpdates` long-polls up to
 `timeout` seconds and returns messages with `id` greater than `offset - 1`,
 excluding the bot's own. A webhook receives `{"message": {...}}` as JSON
-with the secret in `X-Nuntio-Secret`; non-2xx responses are retried with
+with the secret in `X-Messario-Secret`; non-2xx responses are retried with
 exponential backoff. Tokens look like `<bot id>:<random>` and are stored
 hashed.
 
@@ -152,11 +152,11 @@ flowchart LR
   App --> Files[filestore: local / S3]
   App --> Hook[webhook dispatcher]
   App --> Lic[license]
-  Main[cmd/nuntio] -.wires.-> HTTP & App & PG & Hub & Files & Hook & Lic
+  Main[cmd/messario] -.wires.-> HTTP & App & PG & Hub & Files & Hook & Lic
   Main -.optional.-> Obs[obs: Vindice / OpenTelemetry]
 ```
 
-`cmd/nuntio` reads config, opens adapters and hands them to `app.New` as
+`cmd/messario` reads config, opens adapters and hands them to `app.New` as
 interfaces. `internal/domain` holds entities and rules with no outside
 imports. `internal/app` implements every use case (login, chats, messages,
 read receipts, files, bots, admin) against the ports in `ports.go`, so a
@@ -181,7 +181,7 @@ on start.
   instance, replace `memhub` with a NATS-backed hub (the `app.Hub` port) and
   put instances behind a load balancer; the DB schema and clients need no
   change.
-- **Observability**: set `NUNTIO_VINDICE_ENDPOINT` and `NUNTIO_VINDICE_API_KEY`
+- **Observability**: set `MESSARIO_VINDICE_ENDPOINT` and `MESSARIO_VINDICE_API_KEY`
   to get traces for every request, request metrics and trace-linked logs.
   `GET /healthz` for liveness.
 - **Security notes**: sessions and bot tokens are stored hashed; cookies are

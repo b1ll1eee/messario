@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nuntio — self-hosted team chat for your organization</title>
-<meta name="description" content="Nuntio is self-hosted team chat: one Go binary, one PostgreSQL, a Telegram-style bot API, and your data never leaves your servers.">
-<link rel="canonical" href="https://b1ll1eee.github.io/nuntio-message/en/">
-<link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/nuntio-message/">
-<link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/nuntio-message/en/">
-<link rel="alternate" hreflang="x-default" href="https://b1ll1eee.github.io/nuntio-message/">
+<title>Messario — self-hosted team chat for your organization</title>
+<meta name="description" content="Messario is self-hosted team chat: one Go binary, one PostgreSQL, a Telegram-style bot API, and your data never leaves your servers.">
+<link rel="canonical" href="https://b1ll1eee.github.io/messario/en/">
+<link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/messario/">
+<link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/messario/en/">
+<link rel="alternate" hreflang="x-default" href="https://b1ll1eee.github.io/messario/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Nuntio — self-hosted team chat for your organization">
+<meta property="og:title" content="Messario — self-hosted team chat for your organization">
 <meta property="og:description" content="One binary, one database, a Telegram-style bot API. Your data stays on your servers.">
-<meta property="og:url" content="https://b1ll1eee.github.io/nuntio-message/en/">
-<meta property="og:image" content="https://b1ll1eee.github.io/nuntio-message/assets/desktop.png">
+<meta property="og:url" content="https://b1ll1eee.github.io/messario/en/">
+<meta property="og:image" content="https://b1ll1eee.github.io/messario/assets/og.png">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -21,27 +21,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Nuntio","applicationCategory":"BusinessApplication","operatingSystem":"Linux, Docker","description":"Self-hosted team chat with a Telegram-style bot API","url":"https://b1ll1eee.github.io/nuntio-message/en/","softwareHelp":"https://github.com/b1ll1eee/nuntio-message","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Community edition, free for 10 seats"}}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Messario","applicationCategory":"BusinessApplication","operatingSystem":"Linux, Docker","description":"Self-hosted team chat with a Telegram-style bot API","url":"https://b1ll1eee.github.io/messario/en/","softwareHelp":"https://github.com/b1ll1eee/messario","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Community edition, free for 10 seats"}}
 </script>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <a class="brand" href="./"><span class="logo" aria-hidden="true">N</span>Nuntio</a>
+    <a class="brand" href="./"><img class="logo" src="../favicon.svg" width="30" height="30" alt="">Messario</a>
     <nav class="menu" aria-label="Main"><a href="#features">Features</a><a href="#bot">Bot API</a><a href="#selfhost">Self-host</a><a href="#pricing">Pricing</a></nav>
     <span class="grow"></span>
     <a class="btn" href="../" lang="th" hreflang="th">ภาษาไทย</a>
-    <a class="btn dark" href="https://github.com/b1ll1eee/nuntio-message">GitHub</a>
+    <a class="btn dark" href="https://github.com/b1ll1eee/messario">GitHub</a>
   </header>
 
   <section class="hero">
     <span class="eyebrow">Self-hosted team chat</span>
     <h1>Your company's chat, on your company's servers</h1>
-    <p class="lede">Nuntio is team chat you install yourself: one Go binary, one PostgreSQL, a bot API shaped like Telegram's, and no data leaving your network.</p>
-    <div class="row"><a class="btn primary" href="#selfhost">Install in 15 minutes</a><a class="btn" href="https://github.com/b1ll1eee/nuntio-message#readme">Read the docs</a></div>
+    <p class="lede">Messario is team chat you install yourself: one Go binary, one PostgreSQL, a bot API shaped like Telegram's, and no data leaving your network.</p>
+    <div class="row"><a class="btn primary" href="#selfhost">Install in 15 minutes</a><a class="btn" href="https://github.com/b1ll1eee/messario#readme">Read the docs</a></div>
     <div class="checks"><span>Data stays on-premises</span><span>Community edition free for 10 seats</span><span>Thai and English UI</span></div>
   </section>
-  <figure class="shot"><img src="../assets/desktop.png" alt="Nuntio desktop: chat list, a team conversation and a message from Deploy Bot" width="1440" height="900" loading="eager"></figure>
+  <figure class="shot"><img src="../assets/desktop.png" alt="Messario desktop: chat list, a team conversation and a message from Deploy Bot" width="1440" height="900" loading="eager"></figure>
 </div>
 
 <section class="band" id="features"><div class="wrap">
@@ -72,10 +72,10 @@
 <section class="band" id="selfhost"><div class="wrap">
   <span class="eyebrow">Self-host</span>
   <h2>Installed in 15 minutes, updated with one command</h2>
-  <pre style="margin-top:28px"><span class="k">git</span> clone https://github.com/b1ll1eee/nuntio-message &amp;&amp; <span class="k">cd</span> nuntio-message/deploy
-<span class="k">cp</span> .env.example .env   <span class="c"># NUNTIO_DOMAIN, POSTGRES_PASSWORD, NUNTIO_LICENSE</span>
+  <pre style="margin-top:28px"><span class="k">git</span> clone https://github.com/b1ll1eee/messario &amp;&amp; <span class="k">cd</span> messario/deploy
+<span class="k">cp</span> .env.example .env   <span class="c"># MESSARIO_DOMAIN, POSTGRES_PASSWORD, MESSARIO_LICENSE</span>
 <span class="k">docker</span> compose up -d
-<span class="k">docker</span> compose exec nuntio /app/nuntio init --org <span class="s">"Your Company"</span> --admin admin --password <span class="s">'...'</span></pre>
+<span class="k">docker</span> compose exec messario /app/messario init --org <span class="s">"Your Company"</span> --admin admin --password <span class="s">'...'</span></pre>
 </div></section>
 
 <section id="pricing"><div class="wrap">
@@ -83,12 +83,12 @@
   <h2>Pay once. No per-seat monthly fees.</h2>
   <p class="sub">Perpetual license verified offline, with one year of support and updates.</p>
   <div class="plans">
-    <article class="plan"><h3>Community</h3><div class="price">Free</div><div class="muted">Up to 10 people</div><ul><li>Direct, group and channel chat</li><li>Unlimited bots</li><li>Files and images</li></ul><a class="btn" href="https://github.com/b1ll1eee/nuntio-message">Download</a></article>
-    <article class="plan hi"><h3>Business</h3><div class="price">[price]</div><div class="muted">Up to 300 people</div><ul><li>Everything in Community</li><li>Audit log and export</li><li>Business-hours support</li></ul><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20Business">Get a quote</a></article>
-    <article class="plan"><h3>Enterprise</h3><div class="price">Contact us</div><div class="muted">Unlimited people</div><ul><li>Everything in Business</li><li>Installation and migration</li><li>SLA and 24/7 support</li></ul><a class="btn" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20Enterprise">Talk to us</a></article>
+    <article class="plan"><h3>Community</h3><div class="price">Free</div><div class="muted">Up to 10 people</div><ul><li>Direct, group and channel chat</li><li>Unlimited bots</li><li>Files and images</li></ul><a class="btn" href="https://github.com/b1ll1eee/messario">Download</a></article>
+    <article class="plan hi"><h3>Business</h3><div class="price">[price]</div><div class="muted">Up to 300 people</div><ul><li>Everything in Community</li><li>Audit log and export</li><li>Business-hours support</li></ul><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Messario%20Business">Get a quote</a></article>
+    <article class="plan"><h3>Enterprise</h3><div class="price">Contact us</div><div class="muted">Unlimited people</div><ul><li>Everything in Business</li><li>Installation and migration</li><li>SLA and 24/7 support</li></ul><a class="btn" href="mailto:krirk.klomkliang@gmail.com?subject=Messario%20Enterprise">Talk to us</a></article>
   </div>
 </div></section>
 
-<footer><div class="wrap"><span class="brand"><span class="logo" aria-hidden="true">N</span>Nuntio</span><span class="grow"></span><a href="https://github.com/b1ll1eee/nuntio-message#readme">Docs</a><a href="https://github.com/b1ll1eee/nuntio-message">GitHub</a><a href="../" lang="th">ภาษาไทย</a></div></footer>
+<footer><div class="wrap"><span class="brand"><img class="logo" src="../favicon.svg" width="30" height="30" alt="">Messario</span><span class="grow"></span><a href="https://github.com/b1ll1eee/messario#readme">Docs</a><a href="https://github.com/b1ll1eee/messario">GitHub</a><a href="../" lang="th">ภาษาไทย</a></div></footer>
 </body>
 </html>

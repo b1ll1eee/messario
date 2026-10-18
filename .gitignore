@@ -1,5 +1,5 @@
 /bin/
-/nuntio
+/messario
 .env
 *.log
 web/node_modules/

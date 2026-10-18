@@ -1,4 +1,4 @@
-// Package domain holds the core types and rules of Nuntio. It has no
+// Package domain holds the core types and rules of Messario. It has no
 // dependency on any framework, database or transport.
 package domain
 

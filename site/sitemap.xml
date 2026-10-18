@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://b1ll1eee.github.io/nuntio-message/</loc>
-    <xhtml:link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/nuntio-message/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/nuntio-message/en/"/>
+    <loc>https://b1ll1eee.github.io/messario/</loc>
+    <xhtml:link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/messario/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/messario/en/"/>
     <changefreq>monthly</changefreq><priority>1.0</priority>
   </url>
   <url>
-    <loc>https://b1ll1eee.github.io/nuntio-message/en/</loc>
-    <xhtml:link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/nuntio-message/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/nuntio-message/en/"/>
+    <loc>https://b1ll1eee.github.io/messario/en/</loc>
+    <xhtml:link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/messario/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/messario/en/"/>
     <changefreq>monthly</changefreq><priority>0.8</priority>
   </url>
 </urlset>

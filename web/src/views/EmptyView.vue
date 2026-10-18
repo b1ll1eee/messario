@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { t } from '../strings'
+import Logo from '../components/Logo.vue'
 </script>
 
 <template>
   <div class="empty">
-    <div class="mark" aria-hidden="true">N</div>
+    <div class="mark"><Logo :size="56" /></div>
     <h2>{{ t.empty.title }}</h2>
     <p class="muted">{{ t.empty.body }}</p>
   </div>
@@ -12,6 +13,6 @@ import { t } from '../strings'
 
 <style scoped>
 .empty { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--muted); }
-.mark { width: 48px; height: 48px; border-radius: 14px; background: var(--surface-2); color: var(--faint); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; margin-bottom: 8px; }
+.mark { margin-bottom: 8px; opacity: 0.9; }
 h2 { font-size: 16px; font-weight: 600; color: var(--ink); }
 </style>

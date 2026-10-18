@@ -45,6 +45,6 @@ func Handler() http.Handler {
 func placeholder() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = w.Write([]byte(`<!doctype html><html lang="th"><meta charset="utf-8"><title>Nuntio</title><body style="font-family:system-ui;padding:40px"><h1>Nuntio</h1><p>API is running. Build the web client with <code>make web</code> to serve it here.</p></body></html>`))
+		_, _ = w.Write([]byte(`<!doctype html><html lang="th"><meta charset="utf-8"><title>Messario</title><body style="font-family:system-ui;padding:40px"><h1>Messario</h1><p>API is running. Build the web client with <code>make web</code> to serve it here.</p></body></html>`))
 	})
 }

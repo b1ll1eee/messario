@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // CreateBot registers a bot user and returns its token exactly once.

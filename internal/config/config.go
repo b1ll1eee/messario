@@ -92,69 +92,69 @@ type Bot struct {
 
 // DefaultLicensePublicKey is the vendor's ed25519 public key (base64url).
 // Replace it with your own from `licensegen keygen` before selling; it can
-// also be overridden at runtime with NUNTIO_LICENSE_PUBLIC_KEY.
+// also be overridden at runtime with MESSARIO_LICENSE_PUBLIC_KEY.
 const DefaultLicensePublicKey = "M1ukSrg_AJVMvuGP5AWjyiK6XCAamzsc9fNpan5uJ88"
 
-// Load reads NUNTIO_* variables with defaults.
+// Load reads MESSARIO_* variables with defaults.
 func Load() (Config, error) {
 	c := Config{
-		Addr:         env("NUNTIO_ADDR", ":8080"),
-		DatabaseURL:  env("NUNTIO_DATABASE_URL", "postgres://nuntio:nuntio@localhost:5432/nuntio?sslmode=disable"),
-		PublicURL:    env("NUNTIO_PUBLIC_URL", "http://localhost:8080"),
-		CookieName:   env("NUNTIO_COOKIE_NAME", "nuntio_session"),
-		CookieSecure: envBool("NUNTIO_COOKIE_SECURE", true),
-		SessionTTL:   envDuration("NUNTIO_SESSION_TTL", 30*24*time.Hour),
-		LogLevel:     env("NUNTIO_LOG_LEVEL", "info"),
+		Addr:         env("MESSARIO_ADDR", ":8080"),
+		DatabaseURL:  env("MESSARIO_DATABASE_URL", "postgres://messario:messario@localhost:5432/messario?sslmode=disable"),
+		PublicURL:    env("MESSARIO_PUBLIC_URL", "http://localhost:8080"),
+		CookieName:   env("MESSARIO_COOKIE_NAME", "messario_session"),
+		CookieSecure: envBool("MESSARIO_COOKIE_SECURE", true),
+		SessionTTL:   envDuration("MESSARIO_SESSION_TTL", 30*24*time.Hour),
+		LogLevel:     env("MESSARIO_LOG_LEVEL", "info"),
 		Limits: Limits{
-			MaxGroupMembers:   envInt("NUNTIO_MAX_GROUP_MEMBERS", 200),
-			MaxChannelMembers: envInt("NUNTIO_MAX_CHANNEL_MEMBERS", 5000),
-			MaxBodyBytes:      envInt("NUNTIO_MAX_BODY_BYTES", 8000),
-			HistoryPageSize:   envInt("NUNTIO_HISTORY_PAGE_SIZE", 50),
-			HistoryPageMax:    envInt("NUNTIO_HISTORY_PAGE_MAX", 200),
-			DirectoryPageMax:  envInt("NUNTIO_DIRECTORY_PAGE_MAX", 500),
+			MaxGroupMembers:   envInt("MESSARIO_MAX_GROUP_MEMBERS", 200),
+			MaxChannelMembers: envInt("MESSARIO_MAX_CHANNEL_MEMBERS", 5000),
+			MaxBodyBytes:      envInt("MESSARIO_MAX_BODY_BYTES", 8000),
+			HistoryPageSize:   envInt("MESSARIO_HISTORY_PAGE_SIZE", 50),
+			HistoryPageMax:    envInt("MESSARIO_HISTORY_PAGE_MAX", 200),
+			DirectoryPageMax:  envInt("MESSARIO_DIRECTORY_PAGE_MAX", 500),
 		},
 		WS: WS{
-			WriteTimeout: envDuration("NUNTIO_WS_WRITE_TIMEOUT", 10*time.Second),
-			PingInterval: envDuration("NUNTIO_WS_PING_INTERVAL", 25*time.Second),
-			PongTimeout:  envDuration("NUNTIO_WS_PONG_TIMEOUT", 10*time.Second),
-			SendBuffer:   envInt("NUNTIO_WS_SEND_BUFFER", 64),
+			WriteTimeout: envDuration("MESSARIO_WS_WRITE_TIMEOUT", 10*time.Second),
+			PingInterval: envDuration("MESSARIO_WS_PING_INTERVAL", 25*time.Second),
+			PongTimeout:  envDuration("MESSARIO_WS_PONG_TIMEOUT", 10*time.Second),
+			SendBuffer:   envInt("MESSARIO_WS_SEND_BUFFER", 64),
 		},
 		Bot: Bot{
-			RatePerSecond:   envFloat("NUNTIO_BOT_RATE_PER_SECOND", 30),
-			Burst:           envInt("NUNTIO_BOT_BURST", 30),
-			LongPollTimeout: envDuration("NUNTIO_BOT_LONGPOLL_TIMEOUT", 25*time.Second),
-			UpdatesPageMax:  envInt("NUNTIO_BOT_UPDATES_PAGE_MAX", 100),
+			RatePerSecond:   envFloat("MESSARIO_BOT_RATE_PER_SECOND", 30),
+			Burst:           envInt("MESSARIO_BOT_BURST", 30),
+			LongPollTimeout: envDuration("MESSARIO_BOT_LONGPOLL_TIMEOUT", 25*time.Second),
+			UpdatesPageMax:  envInt("MESSARIO_BOT_UPDATES_PAGE_MAX", 100),
 		},
 		Obs: Obs{
-			VindiceEndpoint: env("NUNTIO_VINDICE_ENDPOINT", env("VINDICE_ENDPOINT", "")),
-			VindiceAPIKey:   env("NUNTIO_VINDICE_API_KEY", env("VINDICE_API_KEY", "")),
-			Environment:     env("NUNTIO_ENVIRONMENT", "production"),
-			ServiceName:     env("NUNTIO_SERVICE_NAME", "nuntio"),
+			VindiceEndpoint: env("MESSARIO_VINDICE_ENDPOINT", env("VINDICE_ENDPOINT", "")),
+			VindiceAPIKey:   env("MESSARIO_VINDICE_API_KEY", env("VINDICE_API_KEY", "")),
+			Environment:     env("MESSARIO_ENVIRONMENT", "production"),
+			ServiceName:     env("MESSARIO_SERVICE_NAME", "messario"),
 		},
 		Files: Files{
-			MaxBytes:    int64(envInt("NUNTIO_MAX_FILE_MB", 25)) << 20,
-			Dir:         env("NUNTIO_FILES_DIR", "./data/files"),
-			S3Endpoint:  env("NUNTIO_S3_ENDPOINT", ""),
-			S3AccessKey: env("NUNTIO_S3_ACCESS_KEY", ""),
-			S3SecretKey: env("NUNTIO_S3_SECRET_KEY", ""),
-			S3Bucket:    env("NUNTIO_S3_BUCKET", "nuntio"),
-			S3Region:    env("NUNTIO_S3_REGION", "us-east-1"),
-			S3UseSSL:    envBool("NUNTIO_S3_SSL", true),
+			MaxBytes:    int64(envInt("MESSARIO_MAX_FILE_MB", 25)) << 20,
+			Dir:         env("MESSARIO_FILES_DIR", "./data/files"),
+			S3Endpoint:  env("MESSARIO_S3_ENDPOINT", ""),
+			S3AccessKey: env("MESSARIO_S3_ACCESS_KEY", ""),
+			S3SecretKey: env("MESSARIO_S3_SECRET_KEY", ""),
+			S3Bucket:    env("MESSARIO_S3_BUCKET", "messario"),
+			S3Region:    env("MESSARIO_S3_REGION", "us-east-1"),
+			S3UseSSL:    envBool("MESSARIO_S3_SSL", true),
 		},
 		Webhook: Webhook{
-			Timeout:     envDuration("NUNTIO_WEBHOOK_TIMEOUT", 10*time.Second),
-			Attempts:    envInt("NUNTIO_WEBHOOK_ATTEMPTS", 3),
-			Backoff:     envDuration("NUNTIO_WEBHOOK_BACKOFF", 2*time.Second),
-			Concurrency: envInt("NUNTIO_WEBHOOK_CONCURRENCY", 16),
+			Timeout:     envDuration("MESSARIO_WEBHOOK_TIMEOUT", 10*time.Second),
+			Attempts:    envInt("MESSARIO_WEBHOOK_ATTEMPTS", 3),
+			Backoff:     envDuration("MESSARIO_WEBHOOK_BACKOFF", 2*time.Second),
+			Concurrency: envInt("MESSARIO_WEBHOOK_CONCURRENCY", 16),
 		},
 		License: License{
-			Key:       env("NUNTIO_LICENSE", ""),
-			PublicKey: env("NUNTIO_LICENSE_PUBLIC_KEY", DefaultLicensePublicKey),
-			FreeSeats: envInt("NUNTIO_FREE_SEATS", 10),
+			Key:       env("MESSARIO_LICENSE", ""),
+			PublicKey: env("MESSARIO_LICENSE_PUBLIC_KEY", DefaultLicensePublicKey),
+			FreeSeats: envInt("MESSARIO_FREE_SEATS", 10),
 		},
 	}
 	if c.DatabaseURL == "" {
-		return c, fmt.Errorf("NUNTIO_DATABASE_URL is required")
+		return c, fmt.Errorf("MESSARIO_DATABASE_URL is required")
 	}
 	return c, nil
 }

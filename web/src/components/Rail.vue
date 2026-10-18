@@ -4,6 +4,7 @@ import { useAuth } from '../stores/auth'
 import { useChats } from '../stores/chats'
 import { t } from '../strings'
 import Avatar from './Avatar.vue'
+import Logo from './Logo.vue'
 
 const auth = useAuth()
 const chats = useChats()
@@ -29,7 +30,7 @@ function toggleTheme() {
 
 <template>
   <nav class="rail" :aria-label="t.nav.chats">
-    <div class="logo" aria-hidden="true">N</div>
+    <div class="logo"><Logo :size="34" /></div>
     <RouterLink :to="{ name: 'home' }" class="item" :title="t.nav.chats" :aria-label="t.nav.chats" active-class="on">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z" /></svg>
     </RouterLink>
@@ -49,7 +50,7 @@ function toggleTheme() {
 
 <style scoped>
 .rail { width: var(--rail-w); flex: 0 0 var(--rail-w); display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 0; border-right: 1px solid var(--border); background: var(--surface-2); }
-.logo { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+.logo { display: flex; margin-bottom: 8px; }
 .item { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--muted); border: 1px solid transparent; background: transparent; }
 .item:hover { color: var(--ink); }
 .item.on { background: var(--surface); border-color: var(--border); color: var(--ink); }

@@ -8,7 +8,7 @@ h1,h2,h3,p{margin:0}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 header.top{display:flex;align-items:center;gap:28px;flex-wrap:wrap;padding:22px 0}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.02em}
-.logo{width:30px;height:30px;border-radius:9px;background:var(--accent);color:var(--accent-ink);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
+.logo{width:30px;height:30px;display:inline-block}
 nav.menu{display:flex;gap:22px;flex-wrap:wrap;font-size:15px;font-weight:500;color:var(--muted)}
 .grow{flex-grow:1}
 .btn{height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--border);background:var(--surface);display:inline-flex;align-items:center;font-weight:600;font-size:15px}

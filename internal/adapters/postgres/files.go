@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // FileRepo implements app.FileRepo.

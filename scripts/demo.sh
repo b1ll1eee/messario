@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Seed a running Nuntio with demo users, a bot, a group, a channel and a few
+# Seed a running Messario with demo users, a bot, a group, a channel and a few
 # messages. Good for screenshots and first-run demos. Idempotent enough to
 # re-run (duplicate users are skipped).
 #

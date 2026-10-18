@@ -1,6 +1,6 @@
 .PHONY: dev db-up db-down build test vet run init web web-dev release
 
-DEV_DB_URL ?= postgres://nuntio:nuntio@localhost:5432/nuntio?sslmode=disable
+DEV_DB_URL ?= postgres://messario:messario@localhost:5432/messario?sslmode=disable
 
 db-up:
 	docker compose -f deploy/docker-compose.dev.yml up -d --wait
@@ -11,7 +11,7 @@ db-down:
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 
 build:
-	go build -ldflags "-X main.version=$(VERSION)" -o bin/nuntio ./cmd/nuntio
+	go build -ldflags "-X main.version=$(VERSION)" -o bin/messario ./cmd/messario
 
 # Build the Vue client into internal/web/dist so `make build` embeds it.
 web:
@@ -27,13 +27,13 @@ vet:
 	go vet ./...
 
 test:
-	NUNTIO_TEST_DATABASE_URL=$(DEV_DB_URL) go test ./...
+	MESSARIO_TEST_DATABASE_URL=$(DEV_DB_URL) go test ./...
 
 run: build
-	NUNTIO_DATABASE_URL=$(DEV_DB_URL) NUNTIO_COOKIE_SECURE=false ./bin/nuntio serve
+	MESSARIO_DATABASE_URL=$(DEV_DB_URL) MESSARIO_COOKIE_SECURE=false ./bin/messario serve
 
 # make init ORG="My Company" ADMIN=admin PASSWORD=changeme
 init: build
-	NUNTIO_DATABASE_URL=$(DEV_DB_URL) ./bin/nuntio init --org "$(ORG)" --admin "$(ADMIN)" --password "$(PASSWORD)"
+	MESSARIO_DATABASE_URL=$(DEV_DB_URL) ./bin/messario init --org "$(ORG)" --admin "$(ADMIN)" --password "$(PASSWORD)"
 
 dev: db-up run

@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // Config bounds delivery work.
@@ -71,9 +71,9 @@ func (d *Dispatcher) post(w domain.Webhook, body []byte) (int, error) {
 		return 0, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", "Nuntio-Webhook/1.0")
+	req.Header.Set("User-Agent", "Messario-Webhook/1.0")
 	if w.Secret != "" {
-		req.Header.Set("X-Nuntio-Secret", w.Secret)
+		req.Header.Set("X-Messario-Secret", w.Secret)
 	}
 	resp, err := d.client.Do(req)
 	if err != nil {

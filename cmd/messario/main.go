@@ -1,9 +1,9 @@
-// Command nuntio is the single binary: API, WebSocket, bot API and (later)
+// Command messario is the single binary: API, WebSocket, bot API and (later)
 // the embedded web client.
 //
-//	nuntio serve              run the server (default)
-//	nuntio migrate            apply database migrations and exit
-//	nuntio init --org ... --admin ... --password ...   create the org and first admin
+//	messario serve              run the server (default)
+//	messario migrate            apply database migrations and exit
+//	messario init --org ... --admin ... --password ...   create the org and first admin
 package main
 
 import (
@@ -19,18 +19,18 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/filestore"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/hash"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/httpapi"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/memhub"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/obs"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/postgres"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/webhook"
-	"github.com/b1ll1eee/nuntio-message/internal/adapters/ws"
-	"github.com/b1ll1eee/nuntio-message/internal/app"
-	"github.com/b1ll1eee/nuntio-message/internal/config"
-	"github.com/b1ll1eee/nuntio-message/internal/license"
-	"github.com/b1ll1eee/nuntio-message/internal/web"
+	"github.com/b1ll1eee/messario/internal/adapters/filestore"
+	"github.com/b1ll1eee/messario/internal/adapters/hash"
+	"github.com/b1ll1eee/messario/internal/adapters/httpapi"
+	"github.com/b1ll1eee/messario/internal/adapters/memhub"
+	"github.com/b1ll1eee/messario/internal/adapters/obs"
+	"github.com/b1ll1eee/messario/internal/adapters/postgres"
+	"github.com/b1ll1eee/messario/internal/adapters/webhook"
+	"github.com/b1ll1eee/messario/internal/adapters/ws"
+	"github.com/b1ll1eee/messario/internal/app"
+	"github.com/b1ll1eee/messario/internal/config"
+	"github.com/b1ll1eee/messario/internal/license"
+	"github.com/b1ll1eee/messario/internal/web"
 )
 
 // version is stamped at build time: -ldflags "-X main.version=1.2.3".
@@ -136,12 +136,12 @@ func runInit(ctx context.Context, a *app.App, args []string) error {
 	org := fs.String("org", "", "organization name")
 	domainName := fs.String("domain", "", "email domain allowed for members (optional)")
 	admin := fs.String("admin", "admin", "first admin username")
-	password := fs.String("password", "", "first admin password (or NUNTIO_INIT_PASSWORD)")
+	password := fs.String("password", "", "first admin password (or MESSARIO_INIT_PASSWORD)")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *password == "" {
-		*password = os.Getenv("NUNTIO_INIT_PASSWORD")
+		*password = os.Getenv("MESSARIO_INIT_PASSWORD")
 	}
 	u, err := a.Init(ctx, *org, *domainName, *admin, *password)
 	if err != nil {
@@ -152,7 +152,7 @@ func runInit(ctx context.Context, a *app.App, args []string) error {
 }
 
 func serve(ctx context.Context, cfg config.Config, a *app.App, hub *memhub.Hub, tel *obs.Telemetry, log *slog.Logger) error {
-	origins := append([]string{cfg.PublicURL}, splitList(os.Getenv("NUNTIO_ALLOWED_ORIGINS"))...)
+	origins := append([]string{cfg.PublicURL}, splitList(os.Getenv("MESSARIO_ALLOWED_ORIGINS"))...)
 	wsHandler := ws.New(a, hub, ws.Config{
 		WriteTimeout: cfg.WS.WriteTimeout, PingInterval: cfg.WS.PingInterval, PongTimeout: cfg.WS.PongTimeout,
 		SendBuffer: cfg.WS.SendBuffer, AllowedOrigins: origins,
@@ -171,7 +171,7 @@ func serve(ctx context.Context, cfg config.Config, a *app.App, hub *memhub.Hub, 
 	}
 	errc := make(chan error, 1)
 	go func() {
-		log.Info("nuntio listening", "addr", cfg.Addr, "public_url", cfg.PublicURL, "version", version)
+		log.Info("messario listening", "addr", cfg.Addr, "public_url", cfg.PublicURL, "version", version)
 		errc <- srv.ListenAndServe()
 	}()
 	select {
@@ -231,7 +231,7 @@ func openLicense(cfg config.License) (*license.License, error) {
 		pub = k
 	}
 	if cfg.Key != "" && pub == nil {
-		return nil, fmt.Errorf("NUNTIO_LICENSE is set but no license public key is configured")
+		return nil, fmt.Errorf("MESSARIO_LICENSE is set but no license public key is configured")
 	}
 	return license.Parse(cfg.Key, pub, cfg.FreeSeats)
 }

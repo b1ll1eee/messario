@@ -1,4 +1,4 @@
-module github.com/b1ll1eee/nuntio-message
+module github.com/b1ll1eee/messario
 
 go 1.26.0
 

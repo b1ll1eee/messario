@@ -1,4 +1,4 @@
-{$NUNTIO_DOMAIN} {
+{$MESSARIO_DOMAIN} {
 	encode zstd gzip
-	reverse_proxy nuntio:8080
+	reverse_proxy messario:8080
 }

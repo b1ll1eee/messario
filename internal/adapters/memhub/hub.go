@@ -9,7 +9,7 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/b1ll1eee/nuntio-message/internal/app"
+	"github.com/b1ll1eee/messario/internal/app"
 )
 
 // Subscriber receives pre-encoded JSON events. Send must not block: a

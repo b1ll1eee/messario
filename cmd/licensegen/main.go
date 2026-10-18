@@ -14,7 +14,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/b1ll1eee/nuntio-message/internal/license"
+	"github.com/b1ll1eee/messario/internal/license"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 			fail(err)
 		}
 		fmt.Println("private (keep secret):", base64.RawURLEncoding.EncodeToString(priv))
-		fmt.Println("public  (NUNTIO_LICENSE_PUBLIC_KEY):", base64.RawURLEncoding.EncodeToString(pub))
+		fmt.Println("public  (MESSARIO_LICENSE_PUBLIC_KEY):", base64.RawURLEncoding.EncodeToString(pub))
 	case "issue":
 		fs := flag.NewFlagSet("issue", flag.ExitOnError)
 		keyB64 := fs.String("key", os.Getenv("LICENSE_PRIVATE_KEY"), "private key (base64url) or LICENSE_PRIVATE_KEY")

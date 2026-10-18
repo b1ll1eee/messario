@@ -9,7 +9,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // UploadFile stores the bytes, records the file and posts a file message.

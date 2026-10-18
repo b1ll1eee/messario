@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // ListChats returns the viewer's chats with unread counts, newest activity first.

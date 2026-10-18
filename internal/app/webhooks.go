@@ -5,11 +5,11 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/b1ll1eee/nuntio-message/internal/domain"
+	"github.com/b1ll1eee/messario/internal/domain"
 )
 
 // SetWebhook registers where a bot wants new messages pushed. Only http(s)
-// URLs are accepted; the secret is echoed back in the X-Nuntio-Secret header
+// URLs are accepted; the secret is echoed back in the X-Messario-Secret header
 // so the receiver can verify the call came from this server.
 func (a *App) SetWebhook(ctx context.Context, bot *domain.User, rawURL, secret string) (*domain.Webhook, error) {
 	rawURL = strings.TrimSpace(rawURL)

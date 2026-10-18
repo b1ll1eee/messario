@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ApiError } from '../api/http'
 import { useAuth } from '../stores/auth'
 import { t } from '../strings'
+import Logo from '../components/Logo.vue'
 
 const auth = useAuth()
 const router = useRouter()
@@ -33,7 +34,7 @@ async function submit() {
 <template>
   <main class="login">
     <form class="card" @submit.prevent="submit">
-      <div class="brand"><span class="logo" aria-hidden="true">N</span><span>{{ t.appName }}</span></div>
+      <div class="brand"><Logo :size="30" /><span>{{ t.appName }}</span></div>
       <h1>{{ t.login.title }}</h1>
       <label>
         <span class="label">{{ t.login.username }}</span>
@@ -53,7 +54,6 @@ async function submit() {
 .login { min-height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
 .card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
-.logo { width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; }
 h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-top: 4px; }
 label { display: flex; flex-direction: column; gap: 6px; }
 .btn { height: 44px; justify-content: center; margin-top: 4px; }
