@@ -93,7 +93,7 @@ type Bot struct {
 // DefaultLicensePublicKey is the vendor's ed25519 public key (base64url).
 // Replace it with your own from `licensegen keygen` before selling; it can
 // also be overridden at runtime with NUNTIO_LICENSE_PUBLIC_KEY.
-const DefaultLicensePublicKey = ""
+const DefaultLicensePublicKey = "M1ukSrg_AJVMvuGP5AWjyiK6XCAamzsc9fNpan5uJ88"
 
 // Load reads NUNTIO_* variables with defaults.
 func Load() (Config, error) {

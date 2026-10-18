@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: nuntio
+          POSTGRES_PASSWORD: nuntio
+          POSTGRES_DB: nuntio
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U nuntio"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Build web client
+        run: cd web && npm ci --no-audit --no-fund && npm run build
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Vet
+        run: go vet ./...
+      - name: Test (unit + PostgreSQL integration)
+        env:
+          NUNTIO_TEST_DATABASE_URL: postgres://nuntio:nuntio@localhost:5432/nuntio?sslmode=disable
+        run: go test ./...
+      - name: Build binary
+        run: go build -o /tmp/nuntio ./cmd/nuntio

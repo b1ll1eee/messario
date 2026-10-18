@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://b1ll1eee.github.io/nuntio-message/sitemap.xml

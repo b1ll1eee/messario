@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuntio — self-hosted team chat for your organization</title>
+<meta name="description" content="Nuntio is self-hosted team chat: one Go binary, one PostgreSQL, a Telegram-style bot API, and your data never leaves your servers.">
+<link rel="canonical" href="https://b1ll1eee.github.io/nuntio-message/en/">
+<link rel="alternate" hreflang="th" href="https://b1ll1eee.github.io/nuntio-message/">
+<link rel="alternate" hreflang="en" href="https://b1ll1eee.github.io/nuntio-message/en/">
+<link rel="alternate" hreflang="x-default" href="https://b1ll1eee.github.io/nuntio-message/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nuntio — self-hosted team chat for your organization">
+<meta property="og:description" content="One binary, one database, a Telegram-style bot API. Your data stays on your servers.">
+<meta property="og:url" content="https://b1ll1eee.github.io/nuntio-message/en/">
+<meta property="og:image" content="https://b1ll1eee.github.io/nuntio-message/assets/desktop.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Nuntio","applicationCategory":"BusinessApplication","operatingSystem":"Linux, Docker","description":"Self-hosted team chat with a Telegram-style bot API","url":"https://b1ll1eee.github.io/nuntio-message/en/","softwareHelp":"https://github.com/b1ll1eee/nuntio-message","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Community edition, free for 10 seats"}}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><span class="logo" aria-hidden="true">N</span>Nuntio</a>
+    <nav class="menu" aria-label="Main"><a href="#features">Features</a><a href="#bot">Bot API</a><a href="#selfhost">Self-host</a><a href="#pricing">Pricing</a></nav>
+    <span class="grow"></span>
+    <a class="btn" href="../" lang="th" hreflang="th">ภาษาไทย</a>
+    <a class="btn dark" href="https://github.com/b1ll1eee/nuntio-message">GitHub</a>
+  </header>
+
+  <section class="hero">
+    <span class="eyebrow">Self-hosted team chat</span>
+    <h1>Your company's chat, on your company's servers</h1>
+    <p class="lede">Nuntio is team chat you install yourself: one Go binary, one PostgreSQL, a bot API shaped like Telegram's, and no data leaving your network.</p>
+    <div class="row"><a class="btn primary" href="#selfhost">Install in 15 minutes</a><a class="btn" href="https://github.com/b1ll1eee/nuntio-message#readme">Read the docs</a></div>
+    <div class="checks"><span>Data stays on-premises</span><span>Community edition free for 10 seats</span><span>Thai and English UI</span></div>
+  </section>
+  <figure class="shot"><img src="../assets/desktop.png" alt="Nuntio desktop: chat list, a team conversation and a message from Deploy Bot" width="1440" height="900" loading="eager"></figure>
+</div>
+
+<section class="band" id="features"><div class="wrap">
+  <span class="eyebrow">Features</span>
+  <h2>What an organization needs, and nothing more</h2>
+  <p class="sub">We cut the features that do not matter so the system stays light, fast and easy for a small IT team to run.</p>
+  <div class="grid3">
+    <article class="card"><h3>Your data stays yours</h3><p>Runs on your server or cloud account. Nothing is sent to a vendor. Meets data-residency and privacy requirements.</p></article>
+    <article class="card"><h3>Light and fast</h3><p>A single binary plus PostgreSQL serves a whole company on a small machine. No Kubernetes, no extra operators.</p></article>
+    <article class="card"><h3>Announcement channels</h3><p>HR and management reach everyone for sure, with "seen by" counts, instead of getting lost in group chatter.</p></article>
+    <article class="card"><h3>Control from one place</h3><p>Add, remove or suspend accounts the moment someone leaves. Restrict sign-ups to your email domain.</p></article>
+    <article class="card"><h3>Auditable</h3><p>Audit log for logins and admin actions. File and image sharing stored on your disk or your S3 bucket.</p></article>
+    <article class="card"><h3>Bots for your systems</h3><p>ERP, HR, ticketing or monitoring can post into chat with a single HTTP call.</p></article>
+  </div>
+</div></section>
+
+<section id="bot"><div class="wrap split">
+  <div>
+    <span class="eyebrow">Bot API</span>
+    <h2>If you have written a Telegram bot, you already know it</h2>
+    <p class="sub">Create a bot in the admin page, get a token, and send. Long-polling and webhooks are both supported.</p>
+  </div>
+  <div><pre><span class="k">curl</span> -X POST https://chat.example.com/bot/<span class="s">&lt;TOKEN&gt;</span>/sendMessage \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"chat_id": 42, "text": "Deploy of v1.4.2 succeeded"}'</span></pre></div>
+</div></section>
+
+<section class="band" id="selfhost"><div class="wrap">
+  <span class="eyebrow">Self-host</span>
+  <h2>Installed in 15 minutes, updated with one command</h2>
+  <pre style="margin-top:28px"><span class="k">git</span> clone https://github.com/b1ll1eee/nuntio-message &amp;&amp; <span class="k">cd</span> nuntio-message/deploy
+<span class="k">cp</span> .env.example .env   <span class="c"># NUNTIO_DOMAIN, POSTGRES_PASSWORD, NUNTIO_LICENSE</span>
+<span class="k">docker</span> compose up -d
+<span class="k">docker</span> compose exec nuntio /app/nuntio init --org <span class="s">"Your Company"</span> --admin admin --password <span class="s">'...'</span></pre>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <span class="eyebrow">Pricing</span>
+  <h2>Pay once. No per-seat monthly fees.</h2>
+  <p class="sub">Perpetual license verified offline, with one year of support and updates.</p>
+  <div class="plans">
+    <article class="plan"><h3>Community</h3><div class="price">Free</div><div class="muted">Up to 10 people</div><ul><li>Direct, group and channel chat</li><li>Unlimited bots</li><li>Files and images</li></ul><a class="btn" href="https://github.com/b1ll1eee/nuntio-message">Download</a></article>
+    <article class="plan hi"><h3>Business</h3><div class="price">[price]</div><div class="muted">Up to 300 people</div><ul><li>Everything in Community</li><li>Audit log and export</li><li>Business-hours support</li></ul><a class="btn primary" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20Business">Get a quote</a></article>
+    <article class="plan"><h3>Enterprise</h3><div class="price">Contact us</div><div class="muted">Unlimited people</div><ul><li>Everything in Business</li><li>Installation and migration</li><li>SLA and 24/7 support</li></ul><a class="btn" href="mailto:krirk.klomkliang@gmail.com?subject=Nuntio%20Enterprise">Talk to us</a></article>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><span class="brand"><span class="logo" aria-hidden="true">N</span>Nuntio</span><span class="grow"></span><a href="https://github.com/b1ll1eee/nuntio-message#readme">Docs</a><a href="https://github.com/b1ll1eee/nuntio-message">GitHub</a><a href="../" lang="th">ภาษาไทย</a></div></footer>
+</body>
+</html>
